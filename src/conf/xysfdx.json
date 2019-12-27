@@ -145,22 +145,27 @@
         },
         {
             "label": "force:apex:test:codecoverage",
-            "description": "",
+            "description": "retrieve code coverage results",
             "command": "sfdx force:apex:test:run --codecoverage -r human"
         },
         {
+            "label": "force:apex:test:codecoverage:list",
+            "description": "the code coverage for the apex classes/triggers",
+            "command": "sfdx force:data:soql:query -t -q \"SELECT ApexClassOrTriggerId,ApexClassOrTrigger.Name,NumLinesCovered,NumLinesUncovered FROM ApexCodeCoverageAggregate ORDER BY ApexClassOrTrigger.Name\" --resultformat ${select:soql_result_format}"
+        },
+        {
             "label": "force:apex:log:get:n",
-            "description": "",
+            "description": "fetch the last debug log",
             "command": "sfdx force:apex:log:get -n ${input:log_size}"
         },
         {
             "label": "force:apex:log:get:id",
-            "description": "",
+            "description": "fetch the last debug log by id",
             "command": "sfdx force:apex:log:get -i ${input:ID} --color"
         },
         {
             "label": "force:apex:log:list",
-            "description": "",
+            "description": "list debug logs",
             "command": "sfdx force:apex:log:list"
         },
         {
@@ -363,6 +368,11 @@
             "command": "sfdx force:data:soql:query -q \"${input:soql_str}\" --resultformat ${select:soql_result_format}"
         },
         {
+            "label": "force:data:soql:query:tooling",
+            "description": "",
+            "command": "sfdx force:data:soql:query -t -q \"${input:soql_str}\" --resultformat ${select:soql_result_format}"
+        },
+        {
             "label": "force:data:soql:query:write_to_file",
             "description": "",
             "command": "sfdx force:data:soql:query -q \"${input:soql}\" --resultformat ${select:soql_result_format} > ${input:soql_result}"
@@ -457,7 +467,6 @@
             "description": "",
             "command": "sfdx force:limits:api:display -u ${select:SFDX_ALIAS} "
         },
-
         {
             "label": "force:org:create:help",
             "description": "",
