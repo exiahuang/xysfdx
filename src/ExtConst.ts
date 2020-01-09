@@ -8,5 +8,5 @@ export class ExtConst {
     public static readonly isRegistConfigCommand: boolean = false;
     public static readonly isShowMessage: boolean = true;
     public static readonly message = `Thank you for using ${ExtConst.extName}. https://github.com/exiahuang/${ExtConst.extName}`;
-	public static readonly userConfigKeyList: Array<string> = ["maxBuffer", "encoding"];
+	public static readonly userConfigKeyList: Array<string> = ["maxBuffer", "encoding", "isWslMode", "wslpath"];
 }

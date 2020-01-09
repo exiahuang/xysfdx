@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { window } from 'vscode';
 import { ExtConst } from './ExtConst';
+import { Util } from './Util';
 
 export class XycodeUI {
     private static _instance:XycodeUI;
@@ -120,7 +121,7 @@ export class XycodeUI {
 		return result;
     }
 
-    public async openFolderDialog(configVar: any) {
+    public async openFolderDialog(configVar: any, isWslMode : boolean = false) {
         let label = configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : "select folder";
         const options: vscode.OpenDialogOptions = {
             canSelectFolders: true,
@@ -128,10 +129,10 @@ export class XycodeUI {
             openLabel: label
        };
        const fileUri = await window.showOpenDialog(options);
-       return fileUri && fileUri[0] ? fileUri[0].fsPath : null;
+       return fileUri && fileUri[0] ? (isWslMode ? Util.getWSLPath(fileUri[0].fsPath) : fileUri[0].fsPath) : null;
     }
     
-    public async openFileDialog(configVar: any) {
+    public async openFileDialog(configVar: any, isWslMode : boolean = false) {
         let label = configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : "select file";
         let filters = configVar && configVar.hasOwnProperty("filters") ? configVar["filters"] : { 'All files': ['*'] };
         const options: vscode.OpenDialogOptions = {
@@ -142,10 +143,10 @@ export class XycodeUI {
             filters: filters
        };
        const fileUri = await window.showOpenDialog(options);
-       return fileUri && fileUri[0] ? fileUri[0].fsPath : null;
+       return fileUri && fileUri[0] ? (isWslMode ? Util.getWSLPath(fileUri[0].fsPath) : fileUri[0].fsPath) : null;
     }
 
-    public async openFilesDialog(configVar: any) {
+    public async openFilesDialog(configVar: any, isWslMode : boolean = false) {
         let label = configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : "select files";
         let separator = configVar && configVar.hasOwnProperty("separator") ? configVar["separator"] : " ";
         let filters = configVar && configVar.hasOwnProperty("filters") ? configVar["filters"] : { 'All files': ['*'] };
@@ -157,7 +158,7 @@ export class XycodeUI {
             filters: filters
        };
        const fileUri = await window.showOpenDialog(options);
-       return fileUri ? fileUri.map(uri => "\"" + uri.fsPath + "\"").join(separator) : undefined;
+       return fileUri ? fileUri.map(uri => "\"" + (isWslMode ? Util.getWSLPath(uri.fsPath) : uri.fsPath) + "\"").join(separator) : undefined;
     }
 
     public switchFolder(folder: string) {

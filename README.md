@@ -5,6 +5,7 @@
 ## Features
 
 -   Less than 100k.
+-   Support using WSL/git bash/Msys2/MingW64/MingW32 to develop sfdx .
 -   Use oauth2.
 -   Retrieve Metadata by select.
 -   Metadata diff with server(any sfdc organization).
@@ -46,5 +47,38 @@ You can diff with any sfdc organization.
 ### auto run apex anonymous code
 
 ![xycode-sfdx-run-apex-anonymous](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xycode-sfdx-run-apex-anonymous.gif)
+
+## For wsl/git bash/Msys2 bash user
+
+### use wsl
+
+open `wslmode`
+
+```json
+{
+    "xysfdx.isWslMode": true,
+    "xysfdx.shellPath": "C:\\Windows\\System32\\bash.exe"
+}
+```
+
+### use msys2
+
+```json
+{
+    "xysfdx.isWslMode": false,
+    "xysfdx.isBashMode": true,
+    "xysfdx.shellPath": "C:\\msys64\\usr\\bin\\bash.exe"
+}
+```
+
+### use git bash
+
+```json
+{
+    "xysfdx.isWslMode": false,
+    "xysfdx.isBashMode": true,
+    "xysfdx.shellPath": "C:\\Program Files\\Git\\git-bash.exe"
+}
+```
 
 **Enjoy it!**

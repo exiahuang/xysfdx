@@ -8,6 +8,7 @@ export interface TaskType {
     label: string;
     description: string;
     command: string;
+    platforms?: Array<string>;
     filetypes?: Array<string>;
     encoding?: string;
     cwd?: string;

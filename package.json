@@ -2,7 +2,7 @@
     "name": "xysfdx",
     "displayName": "xysfdx",
     "description": "a Rapid development tool for Salesforce SFDX Development.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "ExiaHuang",
     "engines": {
         "vscode": "^1.40.0"
@@ -38,6 +38,21 @@
                 "type": "number",
                 "default": 20000000,
                 "description": "The maxBuffer option specifies the largest number of bytes allowed on stdout or stderr."
+            },
+            "xysfdx.isWslMode": {
+                "type": "boolean",
+                "default": false,
+                "description": "For Windows Only: use wsl mode."
+            },
+            "xysfdx.isBashMode": {
+                "type": "boolean",
+                "default": false,
+                "description": "For Windows Only: use bash/git-bash/msys2."
+            },
+            "xysfdx.shellPath": {
+                "type": "string",
+                "default": "",
+                "description": "shellPath. default blank. if you use wsl mode, please set it 'C:\\Windows\\System32\\bash.exe'"
             }
         }
     },

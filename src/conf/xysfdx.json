@@ -27,7 +27,15 @@
         },
         {
             "label": "force:auth:web:login",
-            "description": "",
+            "description": "Authorizes a Salesforce org by opening a browser so you can log in through salesforce.com.",
+            "termial": {
+                "name": "xysfdx"
+            },
+            "command": "sfdx force:auth:web:login --instanceurl ${select:instanceurl} --setalias ${input:alias_name}"
+        },
+        {
+            "label": "force:auth:web:login:setdefaultusername",
+            "description": "Sets the authenticated org as the default username that all commands run against",
             "termial": {
                 "name": "xysfdx"
             },
@@ -185,12 +193,13 @@
             "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c --skiptraceflag"
         },
         {
-            "label": "force:apex:log:tail:grep_log",
+            "label": "force:apex:log:tail:grep_debug_log",
             "description": "",
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c"
+            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c | grep -i DEBUG",
+            "platforms": ["linux", "darwin", "wsl", "bash"]
         },
         {
             "label": "force:apex:log:tail:write_to_file",
@@ -206,7 +215,8 @@
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} ${input:skip_trace_flag_setup} | tee ${input:log_file}"
+            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} ${input:skip_trace_flag_setup} | tee ${input:log_file}",
+            "platforms": ["linux", "darwin", "wsl", "bash"]
         },
         {
             "label": "force:help",
@@ -543,6 +553,54 @@
                     ]
                 }
             ]
+        },
+        {
+            "label": "xysfdx:open termial",
+            "description": "open default termial",
+            "command": "",
+            "termial": {
+                "name": "xysfdx"
+            }
+        },
+        {
+            "label": "xysfdx:open wsl console",
+            "description": "open WSL console",
+            "notShowProcess": true,
+            "command": "cd ${workspaceFolder} && start wsl",
+            "platforms": ["wsl"]
+        },
+        {
+            "label": "xysfdx:open powershell",
+            "description": "open powershell console",
+            "notShowProcess": true,
+            "command": "start powershell.exe",
+            "platforms": ["win32"]
+        },
+        {
+            "label": "xysfdx:open workspace",
+            "description": "open windows explorer",
+            "notShowProcess": true,
+            "command": "start explorer \"${workspaceFolder}\"",
+            "platforms": ["win32"]
+        },
+        {
+            "label": "xysfdx:open file in notepad",
+            "description": "open file in notepad",
+            "notShowProcess": true,
+            "command": "notepad \"${file}\"",
+            "platforms": ["win32"]
+        },
+        {
+            "label": "xysfdx:open windows cmd",
+            "description": "open cmd console",
+            "notShowProcess": true,
+            "command": "start cmd",
+            "platforms": ["win32"]
+        },
+        {
+            "label": "xysfdx:print-env",
+            "description": "",
+            "command": "echo relativeFileDirname : ${relativeFileDirname}, relativeFile : ${relativeFile}, selectedText: ${selectedText}, TMPDIR: ${TMPDIR}, file: ${file}"
         }
     ],
     "variables": {
