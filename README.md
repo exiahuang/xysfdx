@@ -5,14 +5,16 @@
 ## Features
 
 -   Less than 100k.
--   Support using WSL/git bash/Msys2/MingW64/MingW32 to develop sfdx .
 -   Use oauth2.
 -   Retrieve Metadata by select.
 -   Metadata diff with server(any sfdc organization).
 -   Retrieve standard sobject.
--   auto run `.apex` file after save.
 -   Quick open sfdc link.
--   Not need to config anything.
+-   auto run `.apex` file after save.
+-   auto save to sfdc server
+-   pretty code: pretty `.cmp`, `.page`, `.component`, `.trigger`, `.cls` file
+-   Support using WSL/git bash/Msys2/MingW64/MingW32 to develope sfdx .
+-   No need to config anything.
 
 ## Shortkey
 
@@ -30,11 +32,17 @@ shortkey: `ctrl+shift+j`
 
 ![xycode-sfdx-init-project](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xycode-sfdx-init-project.gif)
 
+## Retrieve metadata
+
+`force:source:retrieve:metadata`
+
+![xycode-sfdx-retrieve-meta](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xycode-sfdx-retrieve-meta.gif)
+
 ## Diff metadata
 
 `force:source:diff:metadata`
 
-You can diff with any sfdc organization.
+You can diff with **any sfdc organization**.
 
 ### diff source
 
@@ -44,11 +52,94 @@ You can diff with any sfdc organization.
 
 ![xycode-sfdx-diff-profile-meta](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xycode-sfdx-diff-profile-meta.gif)
 
+## Authentication
+
+`force:auth:web:login`
+
+## Deploy metadata
+
+-   `force:source:deploy:metadata`
+-   `force:source:deploy:current_file`
+
+## Option Features
+
+### How to config option features
+
+You can also open the Settings editor from the Command Palette (`Ctrl+Shift+P`) with Preferences: Open Settings or use the keyboard shortcut (`Ctrl+,`).
+
+search `xysfdx`
+
+![xysfdx-setting](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-setting.png)
+
+### After save file events
+
+if you set `xysfdx.onSaveEvents`, you can auto run event after save file.
+
+build-in events:
+
+-   auto_run_apex_anonymous: run `.apex` file after save it
+-   auto_save_to_sfdc: auto deploy to `.trigger`, `.cls`, `.component`, `.page` file to sfdc
+-   pretty_vf_page: pretty `.cmp`, `.page`, `.component` file
+-   pretty_apex_anonymous: pretty `.apex` file
+-   pretty_apex: pretty `.trigger`, `.cls` file
+
+config:
+
+```json
+{
+    "xysfdx.onSaveEvents": [
+        // auto deploy to `.trigger`, `.cls`, `.component`, `.page` file to sfdc
+        // "auto_save_to_sfdc",
+
+        // pretty `.cmp`, `.page`, `.component` file
+        // "pretty_vf_page",
+
+        // pretty `.trigger`, `.cls` file
+        // "pretty_apex",
+
+        // run `.apex` file after save it, default active
+        "auto_run_apex_anonymous",
+
+        // pretty `.apex` file
+        "pretty_apex_anonymous"
+    ]
+}
+```
+
 ### auto run apex anonymous code
+
+`auto_run_apex_anonymous`
 
 ![xycode-sfdx-run-apex-anonymous](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xycode-sfdx-run-apex-anonymous.gif)
 
-## For wsl/git bash/Msys2 bash user
+### auto save to sfdc server
+
+`auto_save_to_sfdc`
+
+![xycode-sfdx-run-apex-anonymous](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-auto-save-to-sfdc.gif)
+
+### pretty code
+
+-   pretty_apex: pretty `.cmp`, `.page`, `.component` file
+-   pretty_vf_page: pretty `.trigger`, `.cls` file
+-   pretty_apex_anonymous : pretty `.apex` file
+
+> you need to install `java` and prettier and prettier-plugin-apex
+> npm install --global prettier prettier-plugin-apex
+> sudo apt install openjdk-8-jdk
+> read more about [prettier-plugin-apex](https://github.com/dangmai/prettier-plugin-apex)
+
+![xycode-sfdx-run-apex-anonymous](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-auto-save-to-sfdc.gif)
+
+## For Windows user
+
+use wsl/git bash/Msys2 bash to develope sfdx.
+
+### Open cmd/wsl/bash
+
+![xysfdx-open-wsl.png](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-open-wsl.png)
+
+![xysfdx-open-wsl](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-open-wsl.gif)
 
 ### use wsl
 
@@ -56,17 +147,16 @@ open `wslmode`
 
 ```json
 {
-    "xysfdx.isWslMode": true,
+    "xysfdx.shellMode": "wsl",
     "xysfdx.shellPath": "C:\\Windows\\System32\\bash.exe"
 }
 ```
 
-### use msys2
+### use msys2 bash
 
 ```json
 {
-    "xysfdx.isWslMode": false,
-    "xysfdx.isBashMode": true,
+    "xysfdx.shellMode": "bash",
     "xysfdx.shellPath": "C:\\msys64\\usr\\bin\\bash.exe"
 }
 ```
@@ -75,8 +165,7 @@ open `wslmode`
 
 ```json
 {
-    "xysfdx.isWslMode": false,
-    "xysfdx.isBashMode": true,
+    "xysfdx.shellMode": "bash",
     "xysfdx.shellPath": "C:\\Program Files\\Git\\git-bash.exe"
 }
 ```

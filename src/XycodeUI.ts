@@ -59,6 +59,12 @@ export class XycodeUI {
         }
         this.xycodeChannel.appendLine(msg.toString());
     }
+    
+    public debug(msg: any) {
+        if(Util.isDebug){
+            this.channelShow(msg);
+        }
+    }
 
     public openChannel() {
         this.xycodeChannel.show();

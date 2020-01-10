@@ -3,7 +3,7 @@ import * as child_process from "child_process";
 import { XycodeUI } from './XycodeUI';
 import { getTriggerHandler } from './TriggerHandler';
 import { Util } from './Util.js';
-import { TaskType } from './Config';
+import { TaskType, TaskUtil } from './Config';
 import { ExtConst } from './ExtConst';
 import { BaseCommandRunner } from './BaseCommandRunner';
 import { SimpleQuickPickItem } from './SimpleQuickPickItem';
@@ -31,21 +31,21 @@ export class CommandRunner extends BaseCommandRunner {
 		this.workspaceFolder = workspaceFolder || Util.homedir;
 		try {
 			const filetype = path.extname(this.file);
-			if (!(!task.filetypes || task.filetypes && filetype && task.filetypes.includes(filetype))) {
-				return;
-			}
-			if (task.inActive) {
+			if(!TaskUtil.isTaskActive(task, filetype)){
 				return;
 			}
 			xycodeui.channelShow(task.label);
 			let command = await this.commandBuilder.parser(task, configVars, this.file, this.workspaceFolder);
 			let cwd = task.cwd ? this.commandBuilder.format(task.cwd) : this.workspaceFolder;
+			cwd = path.resolve(cwd);
 			if (!cwd) {
 				xycodeui.showErrorMessage("workspace folder is null!");
 				return;
 			}
 			xycodeui.openChannel();
 			xycodeui.channelShow(command);
+			xycodeui.debug(cwd);
+			xycodeui.debug(JSON.stringify(task));
 			if (task.beforeTriggers) {
 				await this.invokeTrigger(task.beforeTriggers, cwd);
 			}
@@ -59,6 +59,9 @@ export class CommandRunner extends BaseCommandRunner {
 					maxBuffer: this.options.maxBuffer,
 					shell: this.options.shellPath
 				};
+				if(task.options){
+					options = { ...options, ...task.options };
+				}
 				let { stdout, stderr } = await this.exec(command, options);
 				if (stderr && stderr.length > 0) {
 					xycodeui.showErrorMessage(stderr);
@@ -110,7 +113,7 @@ export class CommandBuilder{
 	constructor(private readonly options : CommandRunnerOptions){
 	}
 
-	public async parser(task: any, configVars: any, file: string, workspaceFolder: string) : Promise<string> {
+	public async parser(task: TaskType, configVars: any, file: string, workspaceFolder: string) : Promise<string> {
 		const xycodeui = XycodeUI.instance;
 		this.configVars = { 
 							...configVars, 
@@ -118,7 +121,7 @@ export class CommandBuilder{
 						};
 		this.fileAttr = this.getFileAttr(file, workspaceFolder);
 
-		let command = task["command"];
+		let command = task.command;
 		let output = command;
 		const regex = new RegExp(/\${(input|select|multiselect|openFolderDailog|singleFileDailog|multiFilesDailog)(\s)*:(\s)*([^} ]+)(\s)*}/g);
 		let matches;
@@ -157,17 +160,23 @@ export class CommandBuilder{
 			
 			if(customInput){
 				if(this.options.isWslMode && Util.isWindows && customInputWsl){
-					output = Util.replaceAll(output, "\\" + matches[0], customInputWsl);
+					if(task.winNativePath){
+						output = Util.replaceAll(output, "\\" + matches[0], customInput);
+					} else {
+						output = Util.replaceAll(output, "\\" + matches[0], customInputWsl);
+					}
 					this.customVars["WSL__" + varkey] = customInputWsl;
 				} else {
 					output = Util.replaceAll(output, "\\" + matches[0], customInput);
 				}
 				this.customVars[varkey] = customInput;
 			} else {
-				throw new Error(`${task["command"]} \r\n ${varkey} : ${customInput} is null!`);
+				throw new Error(`${task.command} \r\n ${varkey} : ${customInput} is null!`);
 			}
 		}
-		output = this.replaceWslFileAttr(output, this.fileAttr);
+		if(this.options.isWslMode && Util.isWindows && !task.winNativePath){
+			output = this.replaceWslFileAttr(output, this.fileAttr);
+		}
 		return this.format(output);
 	}
 
@@ -194,14 +203,10 @@ export class CommandBuilder{
 	}
 
 	private replaceWslFileAttr(command:string, fileAttr: { [index: string]: string; }): string {
-		const xycodeui = XycodeUI.instance;
-		if(this.options.isWslMode && Util.isWindows){
-			for(let key of ["HOME", "TMPDIR", "file", "fileDirname", "workspaceFolder"]) {
-				if(fileAttr.hasOwnProperty(key)){
-					command = Util.replaceAll(command, "\\${" + key + "}", Util.getWSLPath(fileAttr[key])); 
-				}
+		for(let key of ["HOME", "TMPDIR", "file", "fileDirname", "workspaceFolder"]) {
+			if(fileAttr.hasOwnProperty(key)){
+				command = Util.replaceAll(command, "\\${" + key + "}", Util.getWSLPath(fileAttr[key])); 
 			}
-			xycodeui.channelShow(command);
 		}
 		return command;
 	}

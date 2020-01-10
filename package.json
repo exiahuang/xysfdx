@@ -2,7 +2,7 @@
     "name": "xysfdx",
     "displayName": "xysfdx",
     "description": "a Rapid development tool for Salesforce SFDX Development.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "ExiaHuang",
     "engines": {
         "vscode": "^1.40.0"
@@ -15,6 +15,7 @@
     "keywords": [
         "Sfdx",
         "Sfdc",
+        "WSL",
         "sfdxcli",
         "Salesforce",
         "Salesforce DX"
@@ -30,32 +31,6 @@
     "activationEvents": [
         "*"
     ],
-    "configuration": {
-        "type": "object",
-        "title": "xysfdx configuration",
-        "properties": {
-            "xysfdx.maxBuffer": {
-                "type": "number",
-                "default": 20000000,
-                "description": "The maxBuffer option specifies the largest number of bytes allowed on stdout or stderr."
-            },
-            "xysfdx.isWslMode": {
-                "type": "boolean",
-                "default": false,
-                "description": "For Windows Only: use wsl mode."
-            },
-            "xysfdx.isBashMode": {
-                "type": "boolean",
-                "default": false,
-                "description": "For Windows Only: use bash/git-bash/msys2."
-            },
-            "xysfdx.shellPath": {
-                "type": "string",
-                "default": "",
-                "description": "shellPath. default blank. if you use wsl mode, please set it 'C:\\Windows\\System32\\bash.exe'"
-            }
-        }
-    },
     "main": "./out/extension.js",
     "contributes": {
         "keybindings": [
@@ -69,7 +44,45 @@
                 "command": "xysfdx.open",
                 "title": "xysfdx: open command"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "xysfdx configuration",
+            "properties": {
+                "xysfdx.maxBuffer": {
+                    "type": "number",
+                    "default": 20000000,
+                    "description": "The maxBuffer option specifies the largest number of bytes allowed on stdout or stderr."
+                },
+                "xysfdx.shellMode": {
+                    "type": "string",
+                    "default": "default",
+                    "description": "Default blank, use system shell.",
+                    "enum": [
+                        "default",
+                        "wsl",
+                        "bash"
+                    ]
+                },
+                "xysfdx.shellPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "shellPath. default blank. if you use wsl mode, please set it 'C:\\Windows\\System32\\bash.exe'"
+                },
+                "xysfdx.isDebug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "show debug command."
+                },
+                "xysfdx.onSaveEvents": {
+                    "type": "array",
+                    "default": [
+                        "auto_run_apex_anonymous"
+                    ],
+                    "description": "after save events."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

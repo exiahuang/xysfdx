@@ -5,9 +5,14 @@ import { Util } from './Util';
 import { ExtConst } from './ExtConst';
 
 export interface TaskType {
+    key?: string;
     label: string;
     description: string;
     command: string;
+    options?: any;
+    // winNativePath is only use for wsl
+    isDebug?: boolean;
+    winNativePath?: boolean;
     platforms?: Array<string>;
     filetypes?: Array<string>;
     encoding?: string;
@@ -69,5 +74,13 @@ export class Config{
         } else{
             return Config.defaultConfig;
         }
+    }
+}
+
+export class TaskUtil {
+    static isTaskActive(task: TaskType, fileType: string | undefined): boolean {
+        const isUserDefine = task.key ? Util.onSaveEvents.includes(task.key) : false;
+        const isSupportType = task.filetypes ? (fileType ? task.filetypes.includes(fileType) : false) : true;
+        return (!task.inActive || isUserDefine) && isSupportType;
     }
 }

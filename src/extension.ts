@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import path from 'path';
 import { XycodeUI } from './XycodeUI';
 import { Util } from './Util.js';
-import { Config } from './Config';
+import { Config, TaskUtil } from './Config';
 import { ConfigManager, ConfigDesc } from './ConfigManager';
 import { ExtConst } from './ExtConst';
 import { CommandRunner, CommandRunnerOptions } from './CommandRunner';
@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.commands.executeCommand(`${ExtConst.extName}.config`);
 			return;
 		}
-		const task = await vscode.window.showQuickPick(config.tasks.filter(task => !task.inActive && Util.isSupportPlatform(task.platforms) ));
+		const task = await vscode.window.showQuickPick(config.tasks.filter(task => !task.inActive && Util.isSupportPlatform(task.platforms) && (!task.isDebug || task.isDebug && Util.isDebug) ));
 		if (!task) { return false; }
 		const configVars = Util.getUserConfig(config.variables);
 		const options :CommandRunnerOptions = {
@@ -80,9 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onDidSaveTextDocument(async (doc) =>{
 		const config = Config.data;
 		const fileType = path.extname(doc.fileName);
-		const tasks = config.onSaveEvents?.filter(task =>{
-			return !task.inActive && (!task.filetypes || fileType && task.filetypes.includes(fileType));
-		});
+		const tasks = config.onSaveEvents?.filter(task => TaskUtil.isTaskActive(task, fileType));
 		const maxBuffer = Util.maxBuffer;
 		const encoding =  Util.encoding;
 		const isWslMode =  Util.isWslMode;
@@ -94,7 +92,21 @@ export function activate(context: vscode.ExtensionContext) {
 				isWslMode: isWslMode,
 				shellPath: shellPath
 			};
-			await new CommandRunner(options).run(task, Util.getUserConfig(config.variables), doc.fileName, Util.workspaceFolder);
+			if(task.notShowProcess){
+				new CommandRunner(options).run(task, Util.getUserConfig(config.variables), doc.fileName, Util.workspaceFolder);
+			} else {
+				vscode.window.withProgress(
+					{
+						location: vscode.ProgressLocation.Window,
+						title: `${ExtConst.extName} running ${task.label}`
+					},
+					async progress => {
+						  // Progress is shown while this function runs.
+						  // It can also return a promise which is then awaited
+						await new CommandRunner(options).run(task, Util.getUserConfig(config.variables), doc.fileName, Util.workspaceFolder);
+					}
+				);
+			}
 		});
 	});
 

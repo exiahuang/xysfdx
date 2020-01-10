@@ -198,7 +198,7 @@
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c | grep -i DEBUG",
+            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c | grep DEBUG",
             "platforms": ["linux", "darwin", "wsl", "bash"]
         },
         {
@@ -566,7 +566,12 @@
             "label": "xysfdx:open wsl console",
             "description": "open WSL console",
             "notShowProcess": true,
-            "command": "cd ${workspaceFolder} && start wsl",
+            "command": "start wsl",
+            "cwd": "${workspaceFolder}",
+            "options": {
+                "shell": "cmd.exe"
+            },
+            "winPath": true,
             "platforms": ["wsl"]
         },
         {
@@ -574,6 +579,10 @@
             "description": "open powershell console",
             "notShowProcess": true,
             "command": "start powershell.exe",
+            "options": {
+                "shell": "cmd.exe"
+            },
+            "winNativePath": true,
             "platforms": ["win32"]
         },
         {
@@ -581,6 +590,10 @@
             "description": "open windows explorer",
             "notShowProcess": true,
             "command": "start explorer \"${workspaceFolder}\"",
+            "options": {
+                "shell": "cmd.exe"
+            },
+            "winNativePath": true,
             "platforms": ["win32"]
         },
         {
@@ -588,6 +601,11 @@
             "description": "open file in notepad",
             "notShowProcess": true,
             "command": "notepad \"${file}\"",
+            "options": {
+                "shell": "cmd.exe"
+            },
+            "winNativePath": true,
+            "isDebug": true,
             "platforms": ["win32"]
         },
         {
@@ -595,11 +613,26 @@
             "description": "open cmd console",
             "notShowProcess": true,
             "command": "start cmd",
+            "options": {
+                "shell": "cmd.exe"
+            },
+            "winNativePath": true,
             "platforms": ["win32"]
         },
         {
             "label": "xysfdx:print-env",
             "description": "",
+            "isDebug": true,
+            "command": "echo relativeFileDirname : ${relativeFileDirname}, relativeFile : ${relativeFile}, selectedText: ${selectedText}, TMPDIR: ${TMPDIR}, file: ${file}"
+        },
+        {
+            "label": "xysfdx:print-env:winNativePath",
+            "description": "",
+            "options": {
+                "shell": "cmd.exe"
+            },
+            "isDebug": true,
+            "winNativePath": true,
             "command": "echo relativeFileDirname : ${relativeFileDirname}, relativeFile : ${relativeFile}, selectedText: ${selectedText}, TMPDIR: ${TMPDIR}, file: ${file}"
         }
     ],
@@ -1824,29 +1857,36 @@
     },
     "onSaveEvents": [
         {
+            "key": "pretty_apex",
             "label": "pretty apex code.",
             "description": "use prettier-plugin-apex to format salesforce apex code. npm install --global prettier prettier-plugin-apex ",
             "filetypes": [".trigger", ".cls"],
             "cwd": "${fileDirname}",
             "inActive": true,
+            "notShowProcess": true,
             "command": "prettier --parser=apex --write \"${file}\" --tab-width=4 --single-quote=true"
         },
         {
+            "key": "pretty_apex_anonymous",
             "label": "pretty apex anonymous code.",
             "description": "pretty apex anonymous code",
             "filetypes": [".apex"],
             "cwd": "${fileDirname}",
             "inActive": true,
-            "command": "prettier --parser=apex --write \"${file}\" --tab-width=4 --single-quote=true --apex-anonymous"
+            "notShowProcess": true,
+            "command": "prettier --parser=apex-anonymous --write \"${file}\" --tab-width=4 --single-quote=true"
         },
         {
+            "key": "pretty_vf_page",
             "label": "auto run apex anonymous code.",
             "description": "salesforce code format. page, component, cmp file",
             "filetypes": [".cmp", ".page", ".component"],
             "inActive": true,
+            "notShowProcess": true,
             "command": "prettier --write \"${file}\" --single-quote=true --tab-width=4 --parser=html --end-of-line=lf --arrow-parens=always"
         },
         {
+            "key": "auto_save_to_sfdc",
             "label": "Auto save file to sfdc server.",
             "description": "Auto save file to sfdc server.",
             "filetypes": [".trigger", ".cls", ".component", ".page"],
@@ -1855,11 +1895,12 @@
             "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\""
         },
         {
+            "key": "auto_run_apex_anonymous",
             "label": "auto run apex anonymous code.",
             "description": "run apex anonymous code after save.",
             "filetypes": [".apex"],
             "cwd": "${workspaceFolder}",
-            "inActive": false,
+            "inActive": true,
             "command": "sfdx force:apex:execute --apexcodefile \"${file}\""
         }
     ]

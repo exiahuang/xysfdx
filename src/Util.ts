@@ -93,18 +93,26 @@ export class Util {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
 		return userConfiguration["maxBuffer"] || ExtConst.maxBuffer;
 	}
-    static get isWslMode(): boolean {
+    static get isDebug(): boolean {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
-		return userConfiguration["isWslMode"] || false;
-	}
-    static get isBashMode(): boolean {
-		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
-		return userConfiguration["isBashMode"] || false;
+		return userConfiguration["isDebug"] || false;
 	}
     static get shellPath(): string | undefined {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
 		const shellPath = userConfiguration["shellPath"] ? userConfiguration["shellPath"] : undefined;
-		return Util.isWslMode && Util.isWindows ? shellPath || "C:\\Windows\\System32\\bash.exe" : shellPath ;
+		return Util.isWslMode ? shellPath || "C:\\Windows\\System32\\bash.exe" : shellPath ;
+	}
+    static get onSaveEvents(): Array<string> {
+		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
+		return userConfiguration.get("onSaveEvents") || [];
+	}
+    static get isBashMode(): boolean {
+		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
+		return userConfiguration["shellMode"] === "bash";
+	}
+    static get isWslMode(): boolean {
+		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
+		return userConfiguration["shellMode"] === "wsl" && Util.isWindows;
 	}
     static getUserConfig(configVars: {  [x: string]: any;} ): {  [x: string]: any;} {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
