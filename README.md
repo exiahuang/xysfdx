@@ -116,7 +116,7 @@ config:
 
 `auto_save_to_sfdc`
 
-![xycode-sfdx-run-apex-anonymous](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-auto-save-to-sfdc.gif)
+![xysfdx-auto-save-to-sfdc](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-auto-save-to-sfdc.gif)
 
 ### pretty code
 
@@ -129,7 +129,7 @@ config:
 > sudo apt install openjdk-8-jdk
 > read more about [prettier-plugin-apex](https://github.com/dangmai/prettier-plugin-apex)
 
-![xycode-sfdx-run-apex-anonymous](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-auto-save-to-sfdc.gif)
+![xysfdx-pretty_apex](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-pretty_apex.gif)
 
 ## For Windows user
 
