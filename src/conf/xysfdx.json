@@ -634,6 +634,20 @@
             "isDebug": true,
             "winNativePath": true,
             "command": "echo relativeFileDirname : ${relativeFileDirname}, relativeFile : ${relativeFile}, selectedText: ${selectedText}, TMPDIR: ${TMPDIR}, file: ${file}"
+        },
+        {
+            "optFeatureLabel": "use_advanced_command",
+            "inActive": true,
+            "label": "Advanced:force:source:deploy:current_file",
+            "description": "Select Authenticated server and deploy file!",
+            "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\" --targetusername=${select:SFDX_ALIAS}"
+        },
+        {
+            "optFeatureLabel": "use_advanced_command",
+            "inActive": true,
+            "label": "Advanced:force:source:retrieve:current_file",
+            "description": "Select Authenticated server and retrieve file!",
+            "command": "sfdx force:source:retrieve -p \"${file}\" --targetusername=${select:SFDX_ALIAS}"
         }
     ],
     "variables": {
@@ -1857,7 +1871,7 @@
     },
     "onSaveEvents": [
         {
-            "key": "pretty_apex",
+            "optFeatureLabel": "pretty_apex",
             "label": "pretty apex code.",
             "description": "use prettier-plugin-apex to format salesforce apex code. npm install --global prettier prettier-plugin-apex ",
             "filetypes": [".trigger", ".cls"],
@@ -1867,7 +1881,7 @@
             "command": "prettier --parser=apex --write \"${file}\" --tab-width=4 --single-quote=true"
         },
         {
-            "key": "pretty_apex_anonymous",
+            "optFeatureLabel": "pretty_apex_anonymous",
             "label": "pretty apex anonymous code.",
             "description": "pretty apex anonymous code",
             "filetypes": [".apex"],
@@ -1877,7 +1891,7 @@
             "command": "prettier --parser=apex-anonymous --write \"${file}\" --tab-width=4 --single-quote=true"
         },
         {
-            "key": "pretty_vf_page",
+            "optFeatureLabel": "pretty_vf_page",
             "label": "auto run apex anonymous code.",
             "description": "salesforce code format. page, component, cmp file",
             "filetypes": [".cmp", ".page", ".component"],
@@ -1886,7 +1900,7 @@
             "command": "prettier --write \"${file}\" --single-quote=true --tab-width=4 --parser=html --end-of-line=lf --arrow-parens=always"
         },
         {
-            "key": "auto_save_to_sfdc",
+            "optFeatureLabel": "auto_save_to_sfdc",
             "label": "Auto save file to sfdc server.",
             "description": "Auto save file to sfdc server.",
             "filetypes": [".trigger", ".cls", ".component", ".page"],
@@ -1895,7 +1909,7 @@
             "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\""
         },
         {
-            "key": "auto_run_apex_anonymous",
+            "optFeatureLabel": "auto_run_apex_anonymous",
             "label": "auto run apex anonymous code.",
             "description": "run apex anonymous code after save.",
             "filetypes": [".apex"],

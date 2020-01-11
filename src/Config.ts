@@ -5,7 +5,7 @@ import { Util } from './Util';
 import { ExtConst } from './ExtConst';
 
 export interface TaskType {
-    key?: string;
+    optFeatureLabel?: string;
     label: string;
     description: string;
     command: string;
@@ -78,9 +78,10 @@ export class Config{
 }
 
 export class TaskUtil {
-    static isTaskActive(task: TaskType, fileType: string | undefined): boolean {
-        const isUserDefine = task.key ? Util.onSaveEvents.includes(task.key) : false;
+    static isTaskActive(task: TaskType, fileType?: string | undefined): boolean {
+        const isOptionFeature = task.optFeatureLabel ? Util.optionFeatures.includes(task.optFeatureLabel) : false;
         const isSupportType = task.filetypes ? (fileType ? task.filetypes.includes(fileType) : false) : true;
-        return (!task.inActive || isUserDefine) && isSupportType;
+        const isShowDebug = !task.isDebug || task.isDebug && Util.isDebug;
+        return (!task.inActive || isOptionFeature) && isShowDebug && Util.isSupportPlatform(task.platforms)  && isSupportType;
     }
 }

@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.commands.executeCommand(`${ExtConst.extName}.config`);
 			return;
 		}
-		const task = await vscode.window.showQuickPick(config.tasks.filter(task => !task.inActive && Util.isSupportPlatform(task.platforms) && (!task.isDebug || task.isDebug && Util.isDebug) ));
+		const task = await vscode.window.showQuickPick(config.tasks.filter(task => TaskUtil.isTaskActive(task)));
 		if (!task) { return false; }
 		const configVars = Util.getUserConfig(config.variables);
 		const options :CommandRunnerOptions = {

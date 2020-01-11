@@ -74,7 +74,7 @@
                     "default": false,
                     "description": "show debug command."
                 },
-                "xysfdx.onSaveEvents": {
+                "xysfdx.optionFeatures": {
                     "type": "array",
                     "default": [
                         "auto_run_apex_anonymous"

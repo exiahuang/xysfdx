@@ -71,12 +71,11 @@ search `xysfdx`
 
 ![xysfdx-setting](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-setting.png)
 
-### After save file events
+### Build-in Option Features
 
-if you set `xysfdx.onSaveEvents`, you can auto run event after save file.
+`xysfdx.optionFeatures` config:
 
-build-in events:
-
+-   use_advanced_command: show advanced command
 -   auto_run_apex_anonymous: run `.apex` file after save it
 -   auto_save_to_sfdc: auto deploy to `.trigger`, `.cls`, `.component`, `.page` file to sfdc
 -   pretty_vf_page: pretty `.cmp`, `.page`, `.component` file
@@ -87,7 +86,10 @@ config:
 
 ```json
 {
-    "xysfdx.onSaveEvents": [
+    "xysfdx.optionFeatures": [
+        // show advanced command
+        //"use_advanced_command",
+
         // auto deploy to `.trigger`, `.cls`, `.component`, `.page` file to sfdc
         // "auto_save_to_sfdc",
 
@@ -105,6 +107,11 @@ config:
     ]
 }
 ```
+
+### show advanced command
+
+-   `Advanced:force:source:deploy:current_file`: Select Authenticated server and deploy file
+-   `Advanced:force:source:retrieve:current_file`: Select Authenticated server and retrieve file
 
 ### auto run apex anonymous code
 

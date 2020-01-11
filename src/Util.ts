@@ -102,9 +102,9 @@ export class Util {
 		const shellPath = userConfiguration["shellPath"] ? userConfiguration["shellPath"] : undefined;
 		return Util.isWslMode ? shellPath || "C:\\Windows\\System32\\bash.exe" : shellPath ;
 	}
-    static get onSaveEvents(): Array<string> {
+    static get optionFeatures(): Array<string> {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
-		return userConfiguration.get("onSaveEvents") || [];
+		return userConfiguration.get("optionFeatures") || [];
 	}
     static get isBashMode(): boolean {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);

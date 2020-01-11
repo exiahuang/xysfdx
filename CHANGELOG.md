@@ -2,6 +2,11 @@
 
 First Release.
 
+## [0.0.6]
+
+-   change the `xysfdx.onSaveEvents` to `xysfdx.optionFeatures`
+-   add `use_advanced_command` optionFeatures
+
 ## [0.0.4]
 
 -   windows open cmd/wsl/bash termail bug fix
