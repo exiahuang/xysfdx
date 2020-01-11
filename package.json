@@ -2,7 +2,7 @@
     "name": "xysfdx",
     "displayName": "xysfdx",
     "description": "a Rapid development tool for Salesforce SFDX Development.",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "ExiaHuang",
     "engines": {
         "vscode": "^1.40.0"
