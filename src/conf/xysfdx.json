@@ -577,7 +577,7 @@
             "termial": {
                 "name": "dataloader"
             },
-            "command": "cd dataloader && ant start_export -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\""
+            "command": "cd dataloader && ant start_export -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\" -Dapiversion=${select:dataloader_api_version_old}"
         },
         {
             "label": "xysfdx:open termial",

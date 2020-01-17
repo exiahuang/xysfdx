@@ -5,6 +5,7 @@
 ## Features
 
 -   Less than 100k.
+-   Support Dataloader.
 -   Use oauth2.
 -   Retrieve Metadata by select.
 -   Metadata diff with server(any sfdc organization).
