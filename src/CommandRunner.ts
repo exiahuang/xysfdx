@@ -5,15 +5,8 @@ import { getTriggerHandler } from './TriggerHandler';
 import { Util } from './Util.js';
 import { TaskType, TaskUtil } from './Config';
 import { ExtConst } from './ExtConst';
-import { BaseCommandRunner } from './BaseCommandRunner';
+import { BaseCommandRunner, CommandRunnerOptions } from './BaseCommandRunner';
 import { SimpleQuickPickItem } from './SimpleQuickPickItem';
-
-export interface CommandRunnerOptions {
-	maxBuffer: number;
-	encoding: string;
-	isWslMode: boolean;
-	shellPath: string | undefined;
-}
 
 export class CommandRunner extends BaseCommandRunner {
 	private commandBuilder: CommandBuilder;

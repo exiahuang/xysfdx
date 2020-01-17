@@ -5,7 +5,8 @@ import { Util } from './Util.js';
 import { Config, TaskUtil } from './Config';
 import { ConfigManager, ConfigDesc } from './ConfigManager';
 import { ExtConst } from './ExtConst';
-import { CommandRunner, CommandRunnerOptions } from './CommandRunner';
+import { CommandRunner } from './CommandRunner';
+import { CommandRunnerOptions } from './BaseCommandRunner';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

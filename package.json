@@ -33,6 +33,20 @@
     ],
     "main": "./out/extension.js",
     "contributes": {
+        "languages": [
+            {
+                "id": "apex",
+                "aliases": [
+                    "Apex",
+                    "apex"
+                ],
+                "extensions": [
+                    ".cls",
+                    ".apex",
+                    ".soql"
+                ]
+            }
+        ],
         "keybindings": [
             {
                 "command": "xysfdx.open",

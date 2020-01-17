@@ -2,6 +2,11 @@
 
 First Release.
 
+## [0.0.7]
+
+-   support dataloader(Need ant and java! support v40~v42)
+-   grep log command
+
 ## [0.0.6]
 
 -   change the `xysfdx.onSaveEvents` to `xysfdx.optionFeatures`
