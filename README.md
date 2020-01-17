@@ -62,6 +62,12 @@ You can diff with **any sfdc organization**.
 -   `force:source:deploy:metadata`
 -   `force:source:deploy:current_file`
 
+## Dataloader
+
+- support v40.0.0, v41.0.0, v42.0.0
+
+![xysfdx-dataloader](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-dataloader.gif)
+
 ## Option Features
 
 ### How to config option features
