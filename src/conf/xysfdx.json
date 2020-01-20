@@ -565,11 +565,19 @@
         },
         {
             "label": "dataloader: Create the Encrypted Password",
-            "description": "step2: use jar dataloader.security.EncryptionUtil to encrypt password",
+            "description": "step2: encrypt password. Version >= 43.0.0",
             "termial": {
                 "name": "dataloader"
             },
-            "command": "ant -f ./dataloader/build.xml encrypt -Dpassword=${input:sfdc_login_password} -Dapiversion=${select:dataloader_api_version_old}"
+            "command": "ant -f ./dataloader/build.xml encrypt -Dpassword=${input:sfdc_login_password} -Dapiversion=${select:dataloader_api_version_new}"
+        },
+        {
+            "label": "dataloader:old_version: Create the Encrypted Password",
+            "description": "step2: encrypt password. Version : 40.0.0, 41.0.0, 42.0.0",
+            "termial": {
+                "name": "dataloader"
+            },
+            "command": "ant -f ./dataloader/build.xml encrypt_before_v42 -Dpassword=${input:sfdc_login_password} -Dapiversion=${select:dataloader_api_version_old}"
         },
         {
             "label": "dataloader: start to export data",
@@ -577,7 +585,7 @@
             "termial": {
                 "name": "dataloader"
             },
-            "command": "cd dataloader && ant start_export -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\" -Dapiversion=${select:dataloader_api_version_old}"
+            "command": "cd dataloader && ant start_export -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\" -Dapiversion=${select:dataloader_api_version}"
         },
         {
             "label": "xysfdx:open termial",
@@ -1118,6 +1126,35 @@
             "label": "sfdc login password",
             "description": "",
             "value": ""
+        },
+        "dataloader_api_version": {
+            "label": "dataloader api version",
+            "description": "",
+            "value": [
+                "47.0.0",
+                "46.1.0",
+                "46.0.1",
+                "46.0.0",
+                "45.0.0",
+                "44.0.0",
+                "43.0.0",
+                "42.0.0",
+                "41.0.0",
+                "40.0.0"
+            ]
+        },
+        "dataloader_api_version_new": {
+            "label": "dataloader api version",
+            "description": "",
+            "value": [
+                "47.0.0",
+                "46.1.0",
+                "46.0.1",
+                "46.0.0",
+                "45.0.0",
+                "44.0.0",
+                "43.0.0"
+            ]
         },
         "dataloader_api_version_old": {
             "label": "dataloader api version",
