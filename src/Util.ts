@@ -13,6 +13,7 @@ export class Util {
 		}
 	}
 	static getWSLPath(filepath: string): string {
+		if(!filepath){ return ""; }
 		let _filepath = Util.getFilePath(filepath);
 		let sepa: string[] = _filepath.split(path.win32.sep);
 		if(sepa.length === 0) {
@@ -21,6 +22,14 @@ export class Util {
 		let _subPath = [sepa[0].toLowerCase()].concat(sepa.slice(1));
 		let wslPath = "/mnt/" + path.posix.join.apply(path.posix, _subPath).replace(":", "");
 		return wslPath;
+	}
+	static getDockerPath(filepath: string): string {
+		if(!filepath){ return ""; }
+		let _filepath = Util.getFilePath(filepath);
+		let _relate_filepath = path.relative(Util.workspaceFolder, _filepath);
+		let sepapath: string[] = Util.isWindows ? _relate_filepath.split(path.win32.sep) : _relate_filepath.split(path.posix.sep);
+		let dockerPath = path.posix.join.apply(path.posix, [Util.dockerAppRoot].concat(sepapath));
+		return dockerPath;
 	}
 	static getUri(filepath: string): vscode.Uri {
 		return vscode.Uri.file(Util.getFilePath(filepath));
@@ -36,6 +45,9 @@ export class Util {
     }
     static get workspaceFolder(): string {
         return vscode.workspace && vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0 ? vscode.workspace.workspaceFolders[0].uri.fsPath : "";
+    }
+    static get workspaceLowercaseName(): string {
+        return Util.workspaceFolder ? path.basename(Util.workspaceFolder).toLocaleLowerCase() : "";
     }
     static get selectedText(): string {
 		var editor = vscode.window.activeTextEditor;
@@ -67,11 +79,18 @@ export class Util {
     static get isWindows(): boolean {
 		return process.platform === 'win32';
 	}
-    static isSupportPlatform(platforms:Array<string> | undefined ): boolean {
+    static isSupportPlatform(platforms:Array<string> | undefined , excludePlatforms:Array<string> | undefined ): boolean {
+		if(excludePlatforms){ 
+			if(excludePlatforms.includes(process.platform)){ return false; }
+			if(excludePlatforms.includes("wsl") && Util.isWslMode){ return false; }
+			if(excludePlatforms.includes("bash") && Util.isBashMode){ return false; }
+			if(excludePlatforms.includes("docker") && Util.isDockerMode){ return false; }
+		}
 		if(platforms === undefined){ return true;}
 		if(platforms.includes(process.platform)){ return true; }
-		if(platforms.includes("wsl") && Util.isWslMode){ return true; }
-		if(platforms.includes("bash") && Util.isBashMode){ return true; }
+		if(platforms.includes("wsl") && (Util.isWslMode || Util.isDockerMode)){ return true; }
+		if(platforms.includes("bash") && (Util.isBashMode || Util.isDockerMode)){ return true; }
+		if(platforms.includes("docker") && Util.isDockerMode){ return true; }
 		return false;
 	}
     private static get _encoding(): string {
@@ -89,6 +108,10 @@ export class Util {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
 		return userConfiguration["encoding"] || ExtConst.encoding || Util._encoding;
 	}
+    static get dockerAppRoot(): string {
+		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
+		return userConfiguration["dockerAppRoot"] || "/app/sfdx";
+	}
     static get maxBuffer(): number {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
 		return userConfiguration["maxBuffer"] || ExtConst.maxBuffer;
@@ -100,7 +123,8 @@ export class Util {
     static get shellPath(): string | undefined {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
 		const shellPath = userConfiguration["shellPath"] ? userConfiguration["shellPath"] : undefined;
-		return Util.isWslMode ? shellPath || "C:\\Windows\\System32\\bash.exe" : shellPath ;
+		return  Util.isWslMode ? shellPath || "C:\\Windows\\System32\\bash.exe" : 
+				Util.isDockerMode ? undefined: shellPath ;
 	}
     static get optionFeatures(): Array<string> {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
@@ -113,6 +137,14 @@ export class Util {
     static get isWslMode(): boolean {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
 		return userConfiguration["shellMode"] === "wsl" && Util.isWindows;
+	}
+    static get isDockerMode(): boolean {
+		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
+		return userConfiguration["shellMode"] === "docker";
+	}
+    static get dockerContainer(): string {
+		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);
+		return userConfiguration["dockerContainer"] || "";
 	}
     static getUserConfig(configVars: {  [x: string]: any;} ): {  [x: string]: any;} {
 		const userConfiguration = vscode.workspace.getConfiguration(`${ExtConst.extName}`);

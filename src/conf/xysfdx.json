@@ -10,6 +10,7 @@
             "description": "",
             "command": "sfdx force:project:create -n ${input:project_name} --template=${select:sfdx_project_template} --outputdir \"${openFolderDailog:project_directory}\"",
             "cwd": "${project_directory}",
+            "excludePlatforms": ["docker"],
             "beforeTriggers": [
                 {
                     "type": "buildin",
@@ -190,6 +191,9 @@
             "termial": {
                 "name": "xysfdx"
             },
+            "dockerOptions": {
+                "openTTY": true
+            },
             "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c --skiptraceflag"
         },
         {
@@ -198,7 +202,10 @@
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c | grep ${select:apex_grep_log_pattern}",
+            "dockerOptions": {
+                "openTTY": true
+            },
+            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c | grep --color=auto ${select:apex_grep_log_pattern}",
             "platforms": ["linux", "darwin", "wsl", "bash"]
         },
         {
@@ -207,6 +214,9 @@
             "termial": {
                 "name": "xysfdx"
             },
+            "dockerOptions": {
+                "openTTY": true
+            },
             "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} ${input:skip_trace_flag_setup} >> ${input:log_file}"
         },
         {
@@ -214,6 +224,9 @@
             "description": "",
             "termial": {
                 "name": "xysfdx"
+            },
+            "dockerOptions": {
+                "openTTY": true
             },
             "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} ${input:skip_trace_flag_setup} | tee ${input:log_file}",
             "platforms": ["linux", "darwin", "wsl", "bash"]
@@ -389,13 +402,25 @@
         },
         {
             "label": "force:data:tree:export",
-            "description": "",
+            "description": "Exports data from this org into sObject tree format for force:data:tree:import consumption.",
             "command": "sfdx force:data:tree:export -q \"${input:soql}\" --outputdir=${input:data_dir}"
         },
         {
+            "label": "force:data:tree:export:select-alias",
+            "description": "Exports data from an authorized org into sObject tree format for force:data:tree:import consumption.",
+            "command": "sfdx force:data:tree:export -q \"${input:soql}\" --outputdir=${input:data_dir} -u ${select:SFDX_ALIAS}"
+        },
+        {
             "label": "force:data:tree:import",
-            "description": "import data into an org using SObject Tree Save API",
+            "description": "Imports data into this org using the SObject Tree Save API. This data can include master-detail relationships.",
             "command": "sfdx force:data:tree:import -f \"${singleFileDailog:import_file}\" --loglevel ${select:LOGLEVEL}"
+        },
+        {
+            "optFeatureLabel": "use_advanced_command",
+            "inActive": true,
+            "label": "force:data:tree:import:select-alias",
+            "description": "Imports data into an authorized org using the SObject Tree Save API. This data can include master-detail relationships.",
+            "command": "sfdx force:data:tree:import -f \"${singleFileDailog:import_file}\" --loglevel ${select:LOGLEVEL} -u ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:data:tree:import:plan",
@@ -552,7 +577,8 @@
                         "${workspaceFolderBasename} Local <-> ${SFDX_ALIAS} Server"
                     ]
                 }
-            ]
+            ],
+            "excludePlatforms": ["docker"]
         },
         {
             "label": "dataloader: git clone dataloader",
@@ -588,12 +614,18 @@
             "command": "cd dataloader && ant start_export -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\" -Dapiversion=${select:dataloader_api_version}"
         },
         {
+            "label": "xy:auth:username:login",
+            "description": "open default termial",
+            "command": "sfdx xy:auth:username:login -u ${input:sfdc_login_id} -p ${input:sfdc_login_password} -a ${input:sfdc_login_alias} -r ${select:instanceurl}"
+        },
+        {
             "label": "xysfdx:open termial",
             "description": "open default termial",
             "command": "",
             "termial": {
                 "name": "xysfdx"
-            }
+            },
+            "excludePlatforms": ["docker"]
         },
         {
             "label": "xysfdx:open wsl console",
@@ -601,9 +633,7 @@
             "notShowProcess": true,
             "command": "start wsl",
             "cwd": "${workspaceFolder}",
-            "options": {
-                "shell": "cmd.exe"
-            },
+            "isNativeCommand": true,
             "winPath": true,
             "platforms": ["wsl"]
         },
@@ -615,7 +645,7 @@
             "options": {
                 "shell": "cmd.exe"
             },
-            "winNativePath": true,
+            "isNativeCommand": true,
             "platforms": ["win32"]
         },
         {
@@ -626,7 +656,7 @@
             "options": {
                 "shell": "cmd.exe"
             },
-            "winNativePath": true,
+            "isNativeCommand": true,
             "platforms": ["win32"]
         },
         {
@@ -637,7 +667,7 @@
             "options": {
                 "shell": "cmd.exe"
             },
-            "winNativePath": true,
+            "isNativeCommand": true,
             "isDebug": true,
             "platforms": ["win32"]
         },
@@ -649,7 +679,7 @@
             "options": {
                 "shell": "cmd.exe"
             },
-            "winNativePath": true,
+            "isNativeCommand": true,
             "platforms": ["win32"]
         },
         {
@@ -659,13 +689,13 @@
             "command": "echo relativeFileDirname : ${relativeFileDirname}, relativeFile : ${relativeFile}, selectedText: ${selectedText}, TMPDIR: ${TMPDIR}, file: ${file}"
         },
         {
-            "label": "xysfdx:print-env:winNativePath",
+            "label": "xysfdx:print-env:isNativeCommand",
             "description": "",
             "options": {
                 "shell": "cmd.exe"
             },
             "isDebug": true,
-            "winNativePath": true,
+            "isNativeCommand": true,
             "command": "echo relativeFileDirname : ${relativeFileDirname}, relativeFile : ${relativeFile}, selectedText: ${selectedText}, TMPDIR: ${TMPDIR}, file: ${file}"
         },
         {
@@ -1121,6 +1151,16 @@
                 "XDS_RESPONSE_DETAIL",
                 "XDS_RESPONSE_ERROR"
             ]
+        },
+        "sfdc_login_alias": {
+            "label": "sfdc alias",
+            "description": "sfdc alias",
+            "value": ""
+        },
+        "sfdc_login_id": {
+            "label": "sfdc login id",
+            "description": "sfdc login id",
+            "value": ""
         },
         "sfdc_login_password": {
             "label": "sfdc login password",
@@ -2119,7 +2159,7 @@
             "label": "pretty apex code.",
             "description": "use prettier-plugin-apex to format salesforce apex code. npm install --global prettier prettier-plugin-apex ",
             "filetypes": [".trigger", ".cls"],
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "inActive": true,
             "notShowProcess": true,
             "command": "prettier --parser=apex --write \"${file}\" --tab-width=4 --single-quote=true"
@@ -2129,7 +2169,7 @@
             "label": "pretty apex anonymous code.",
             "description": "pretty apex anonymous code",
             "filetypes": [".apex"],
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "inActive": true,
             "notShowProcess": true,
             "command": "prettier --parser=apex-anonymous --write \"${file}\" --tab-width=4 --single-quote=true"
@@ -2139,6 +2179,7 @@
             "label": "auto run apex anonymous code.",
             "description": "salesforce code format. page, component, cmp file",
             "filetypes": [".cmp", ".page", ".component"],
+            "cwd": "${workspaceFolder}",
             "inActive": true,
             "notShowProcess": true,
             "command": "prettier --write \"${file}\" --single-quote=true --tab-width=4 --parser=html --end-of-line=lf --arrow-parens=always"

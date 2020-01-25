@@ -34,7 +34,7 @@ export class XycodeUI {
         const writeEmitter = new vscode.EventEmitter<string>();
         const pty = {
             onDidWrite: writeEmitter.event,
-            open: () => writeEmitter.fire('Type and press enter to echo the text\r\n\r\n'),
+            open: () => writeEmitter.fire('Type and press enter to echo the text\n\n'),
             close: () => {},
             handleInput: (data: string) => {
             }
@@ -44,8 +44,8 @@ export class XycodeUI {
         return writeEmitter;
     }
 
-    public getTerminal(name?: string, shellPath?: string, shellArgs?: string[] | string): vscode.Terminal{
-        const terminal = (<any>vscode.window).createTerminal({ name: name, shellPath: shellPath, shellArgs:shellArgs });
+    public getTerminal(opts: {name?: string, shellPath?: string | undefined, shellArgs?: string[] | string}): vscode.Terminal{
+        const terminal = (<any>vscode.window).createTerminal(opts);
         terminal.show();
         return terminal;
     }
@@ -59,11 +59,37 @@ export class XycodeUI {
         }
         this.xycodeChannel.appendLine(msg.toString());
     }
-    
-    public debug(msg: any) {
-        if(Util.isDebug){
-            this.channelShow(msg);
+
+    public log(msg: any, opts:{ showTimeStamp:boolean, tag: string, isJson : boolean }) {
+        if(!msg){
+            return;
         }
+        if(opts.showTimeStamp) {
+            this.xycodeChannel.append(`[${new Date().toLocaleString()}] ` + (opts.tag ? `[${opts.tag}] `: ""));
+        }
+        if(opts.isJson){
+            this.xycodeChannel.appendLine(JSON.stringify(msg, null, 2));
+        } else {
+            this.xycodeChannel.appendLine(msg.toString());
+        }
+    }
+    
+    public debug(msg: any, isJson: boolean = false) {
+        if(msg && Util.isDebug){
+            this.log(msg, {showTimeStamp:true, tag: "debug", isJson: isJson});
+        }
+    }
+
+    public info(msg: any, isJson: boolean = false) {
+        this.log(msg, {showTimeStamp:true, tag: "info", isJson: isJson});
+    }
+
+    public fatal(msg: any, isJson: boolean = false) {
+        this.log(msg, {showTimeStamp:true, tag: "fatal", isJson: isJson});
+    }
+
+    public warn(msg: any, isJson: boolean = false) {
+        this.log(msg, {showTimeStamp:true, tag: "warn", isJson: isJson});
     }
 
     public openChannel() {
@@ -123,11 +149,11 @@ export class XycodeUI {
             {
 			value: configVar && configVar.hasOwnProperty("value") ? configVar["value"].toString() : "",
 			placeHolder: configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : `Please input ${msg} `
-		    });
+            });
 		return result;
     }
 
-    public async openFolderDialog(configVar: any, isWslMode : boolean = false) {
+    public async openFolderDialog(configVar: any) {
         let label = configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : "select folder";
         const options: vscode.OpenDialogOptions = {
             canSelectFolders: true,
@@ -135,10 +161,10 @@ export class XycodeUI {
             openLabel: label
        };
        const fileUri = await window.showOpenDialog(options);
-       return fileUri && fileUri[0] ? (isWslMode ? Util.getWSLPath(fileUri[0].fsPath) : fileUri[0].fsPath) : null;
+       return fileUri && fileUri[0] ? fileUri[0].fsPath : undefined;
     }
     
-    public async openFileDialog(configVar: any, isWslMode : boolean = false) {
+    public async openFileDialog(configVar: any) {
         let label = configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : "select file";
         let filters = configVar && configVar.hasOwnProperty("filters") ? configVar["filters"] : { 'All files': ['*'] };
         const options: vscode.OpenDialogOptions = {
@@ -149,12 +175,11 @@ export class XycodeUI {
             filters: filters
        };
        const fileUri = await window.showOpenDialog(options);
-       return fileUri && fileUri[0] ? (isWslMode ? Util.getWSLPath(fileUri[0].fsPath) : fileUri[0].fsPath) : null;
+       return fileUri && fileUri[0] ? fileUri[0].fsPath : undefined;
     }
 
-    public async openFilesDialog(configVar: any, isWslMode : boolean = false) {
+    public async openFilesDialog(configVar: any) {
         let label = configVar && configVar.hasOwnProperty("label") ? configVar["label"].toString() : "select files";
-        let separator = configVar && configVar.hasOwnProperty("separator") ? configVar["separator"] : " ";
         let filters = configVar && configVar.hasOwnProperty("filters") ? configVar["filters"] : { 'All files': ['*'] };
         const options: vscode.OpenDialogOptions = {
             canSelectMany: true,
@@ -164,7 +189,7 @@ export class XycodeUI {
             filters: filters
        };
        const fileUri = await window.showOpenDialog(options);
-       return fileUri ? fileUri.map(uri => "\"" + (isWslMode ? Util.getWSLPath(uri.fsPath) : uri.fsPath) + "\"").join(separator) : undefined;
+       return fileUri ? fileUri.map(uri => uri.fsPath) : [];
     }
 
     public switchFolder(folder: string) {

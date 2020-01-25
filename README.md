@@ -4,18 +4,22 @@
 
 ## Features
 
--   Less than 100k.
--   Support Dataloader.
--   Use oauth2.
+-   Less than 100k
+-   Support [Dataloader v40.0.0~v47.0.0](https://github.com/exiahuang/dataloader).
+-   Support Docker to develope sfdx . Use [exiasfdc/sfdx](https://hub.docker.com/r/exiasfdc/sfdx) docker image, no need to config, just run it.
+-   Support using WSL/git bash/Msys2/MingW64/MingW32 to develope sfdx .
+-   Authenticated with oauth2.
 -   Retrieve Metadata by select.
 -   Metadata diff with server(any sfdc organization).
 -   Retrieve standard sobject.
--   Quick open sfdc link.
--   auto run `.apex` file after save.
--   auto save to sfdc server
--   pretty code: pretty `.cmp`, `.page`, `.component`, `.trigger`, `.cls` file
--   Support using WSL/git bash/Msys2/MingW64/MingW32 to develope sfdx .
--   No need to config anything.
+-   Open sfdc link easily.
+-   Open console easily.
+-   Option Features
+    -   support Username-Password OAuth Authentication .
+    -   auto run `.apex` file after save.
+    -   auto save to sfdc server
+    -   deploy to any sfdc organization
+    -   pretty code: pretty `.cmp`, `.page`, `.component`, `.trigger`, `.cls` file
 
 ## Shortkey
 
@@ -56,6 +60,7 @@ You can diff with **any sfdc organization**.
 ## Authentication
 
 `force:auth:web:login`
+`force:auth:web:login:setdefaultusername`
 
 ## Deploy metadata
 
@@ -64,7 +69,7 @@ You can diff with **any sfdc organization**.
 
 ## Dataloader
 
-- support v40.0.0~v47.0.0
+-   support v40.0.0~v47.0.0
 
 ![xysfdx-dataloader](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-dataloader.gif)
 
@@ -145,6 +150,46 @@ config:
 
 ![xysfdx-pretty_apex](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-pretty_apex.gif)
 
+
+
+## For Docker user
+
+### vscode config
+
+```json
+{
+    "xysfdx.shellMode": "docker",
+    "xysfdx.shellPath": "",
+    "xysfdx.dockerContainer": "${lowercaseWorkspaceName}_sfdx_1",
+    "xysfdx.dockerAppRoot": "/app/sfdx"
+}
+```
+
+
+### How to use docker ?
+
+1. pull images : `docker: pull image exiasfdc/sfdx`
+
+![xysfdx-docker-image](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-docker-image.gif)
+
+2. create container : `docker: create sfdx container`
+
+![xysfdx-docker-container](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-docker-container.gif)
+
+3. use docker shell : `docker: attach docker shell`
+
+![xysfdx-docker-bash](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-docker-bash.gif)
+
+then , use the `xysfdx` to develope sfdx.
+
+
+### attention
+
+- can not use `force:auth:web:login` or `force:auth:web:login:setdefaultusername`
+- can not use `force:project:create`
+- use `xy:auth:username:login` to auth
+
+
 ## For Windows user
 
 use wsl/git bash/Msys2 bash to develope sfdx.
@@ -180,7 +225,7 @@ open `wslmode`
 ```json
 {
     "xysfdx.shellMode": "bash",
-    "xysfdx.shellPath": "C:\\Program Files\\Git\\git-bash.exe"
+    "xysfdx.shellPath": "C:\\Program Files\\Git\\usr\\bin\\bash.exe"
 }
 ```
 

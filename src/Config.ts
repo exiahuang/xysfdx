@@ -10,10 +10,11 @@ export interface TaskType {
     description: string;
     command: string;
     options?: any;
-    // winNativePath is only use for wsl
+    // isNativeCommand is only use for wsl or docker
     isDebug?: boolean;
-    winNativePath?: boolean;
+    isNativeCommand?: boolean;
     platforms?: Array<string>;
+    excludePlatforms?: Array<string>;
     filetypes?: Array<string>;
     encoding?: string;
     cwd?: string;
@@ -22,6 +23,12 @@ export interface TaskType {
     notShowProcess?: boolean;
     beforeTriggers?: Array<{type: string, fn: string, params: []}>;
     afterTriggers?: Array<{type: string, fn: string, params: []}>;
+    dockerOptions?: DockerOptions;
+}
+
+export interface DockerOptions {
+    openTTY: boolean;
+    cwd: string;
 }
 
 export interface ConfigType {
@@ -82,6 +89,6 @@ export class TaskUtil {
         const isOptionFeature = task.optFeatureLabel ? Util.optionFeatures.includes(task.optFeatureLabel) : false;
         const isSupportType = task.filetypes ? (fileType ? task.filetypes.includes(fileType) : false) : true;
         const isShowDebug = !task.isDebug || task.isDebug && Util.isDebug;
-        return (!task.inActive || isOptionFeature) && isShowDebug && Util.isSupportPlatform(task.platforms)  && isSupportType;
+        return (!task.inActive || isOptionFeature) && isShowDebug && Util.isSupportPlatform(task.platforms, task.excludePlatforms)  && isSupportType;
     }
 }

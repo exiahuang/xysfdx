@@ -1,0 +1,83 @@
+{
+    "tasks": [
+        {
+            "label": "docker: attach docker shell",
+            "description": "open default termial",
+            "command": "[ -e /bin/bash ] && /bin/bash || /bin/sh",
+            "termial": {
+                "name": "xysfdx"
+            },
+            "dockerOptions": {
+                "openTTY": true
+            },
+            "platforms": ["docker"]
+        },
+        {
+            "label": "docker: pull image exiasfdc/sfdx",
+            "description": "docker pull exiasfdc/sfdx",
+            "command": "docker pull exiasfdc/sfdx:latest",
+            "termial": {
+                "name": "xysfdx"
+            },
+            "isNativeCommand": true,
+            "platforms": ["docker"]
+        },
+        {
+            "label": "docker: create sfdx container",
+            "description": "create container",
+            "command": "docker run --rm -it -v \"${workspaceFolder}\":/app/sfdx --name ${lowercaseWorkspaceName}_sfdx_1 exiasfdc/sfdx:latest",
+            "termial": {
+                "name": "xysfdx"
+            },
+            "isNativeCommand": true,
+            "platforms": ["docker"]
+        },
+        {
+            "label": "force:source:diff:metadata",
+            "description": "",
+            "cwd": "${workspaceFolder}/.xysfdx/temp/",
+            "command": "sfdx force:source:retrieve -p ${file} -u ${select:SFDX_ALIAS}",
+            "beforeTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "RemoveFile",
+                    "params": [
+                        "${workspaceFolder}/.xysfdx/temp/${relativeFile}"
+                    ]
+                },
+                {
+                    "type": "buildin",
+                    "fn": "Mkdirs",
+                    "params": [
+                        "${workspaceFolder}/.xysfdx/temp/${relativeFileDirname}"
+                    ]
+                },
+                {
+                    "type": "buildin",
+                    "fn": "CopyFile",
+                    "params": [
+                        "${XYCODE_PATH}/sfdx/sfdx-project.json",
+                        "${workspaceFolder}/.xysfdx/temp/sfdx-project.json"
+                    ]
+                }
+            ],
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "Diff",
+                    "params": [
+                        "${file}",
+                        "${workspaceFolder}/.xysfdx/temp/${relativeFile}",
+                        "${workspaceFolderBasename} Local <-> ${SFDX_ALIAS} Server"
+                    ]
+                }
+            ],
+            "dockerOptions": {
+                "openTTY": false,
+                "cwd": "/app/sfdx/.xysfdx/temp"
+            },
+            "platforms": ["docker"]
+        }
+    ],
+    "variables": {}
+}

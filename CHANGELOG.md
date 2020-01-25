@@ -2,6 +2,18 @@
 
 First Release.
 
+## [0.1.1]
+
+-   support docker mode
+-   add excludePlatforms config
+-   add debug message
+-   fix `multiFilesDailog` error in wsl mode
+-   add `${lowercaseWorkspaceName}` variable for docker container name.
+
+## [0.0.10]
+
+-   support dataloader(Need ant and java! support v40~v47)
+
 ## [0.0.7]
 
 -   support dataloader(Need ant and java! support v40~v42)

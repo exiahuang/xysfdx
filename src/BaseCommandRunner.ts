@@ -7,6 +7,7 @@ export interface CommandRunnerOptions {
 	isWslMode: boolean;
 	shellPath: string | undefined;
 	cwd?: string;
+	dockerContainer?: string | undefined;
 }
 
 export class BaseCommandRunner {
@@ -30,7 +31,7 @@ export class BaseCommandRunner {
 					console.log(options);
 					console.error(error);
 					let _errorExceptionMsg = error.toString();
-					let errorMsg = [_errorExceptionMsg, stdout, stderr].join("\r\n");
+					let errorMsg = [_errorExceptionMsg, stdout, stderr].join("\n");
 					reject(errorMsg);
 				}
 				resolve({ stdout, stderr });
@@ -67,7 +68,7 @@ export class SimpleCommandRunner {
 					console.log(options);
 					console.error(error);
 					let _errorExceptionMsg = error.toString();
-					let errorMsg = [_errorExceptionMsg, stdout, stderr].join("\r\n");
+					let errorMsg = [_errorExceptionMsg, stdout, stderr].join("\n");
 					reject(errorMsg);
 				}
 				resolve({ stdout, stderr });
