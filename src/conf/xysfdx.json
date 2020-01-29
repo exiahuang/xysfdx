@@ -711,6 +711,18 @@
             "label": "Advanced:force:source:retrieve:current_file",
             "description": "Select Authenticated server and retrieve file!",
             "command": "sfdx force:source:retrieve -p \"${file}\" --targetusername=${select:SFDX_ALIAS}"
+        },
+        {
+            "label": "pretty apex code.(cls/trigger/apex file)",
+            "description": "use prettier-plugin-apex to format salesforce apex code. npm install --global prettier prettier-plugin-apex ",
+            "cwd": "${workspaceFolder}",
+            "command": "prettier --parser=apex --write \"${file}\" --tab-width=4 --single-quote=true"
+        },
+        {
+            "label": "pretty visualforce code.(page/compoent/cmp file)",
+            "description": "salesforce code format. page, component, cmp file",
+            "cwd": "${workspaceFolder}",
+            "command": "prettier --write \"${file}\" --single-quote=true --tab-width=4 --parser=html --end-of-line=lf --arrow-parens=always"
         }
     ],
     "variables": {

@@ -150,8 +150,6 @@ config:
 
 ![xysfdx-pretty_apex](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-pretty_apex.gif)
 
-
-
 ## For Docker user
 
 ### vscode config
@@ -164,7 +162,6 @@ config:
     "xysfdx.dockerAppRoot": "/app/sfdx"
 }
 ```
-
 
 ### How to use docker ?
 
@@ -182,13 +179,10 @@ config:
 
 then , use the `xysfdx` to develope sfdx.
 
-
 ### attention
 
-- can not use `force:auth:web:login` or `force:auth:web:login:setdefaultusername`
-- can not use `force:project:create`
-- use `xy:auth:username:login` to auth
-
+-   can not use `force:auth:web:login` or `force:auth:web:login:setdefaultusername`
+-   use `xy:auth:username:login` to auth
 
 ## For Windows user
 

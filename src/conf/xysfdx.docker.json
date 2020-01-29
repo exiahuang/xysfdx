@@ -15,7 +15,7 @@
         {
             "label": "docker: pull image exiasfdc/sfdx",
             "description": "docker pull exiasfdc/sfdx",
-            "command": "docker pull exiasfdc/sfdx:latest",
+            "command": "docker pull ${docker_image_name}",
             "termial": {
                 "name": "xysfdx"
             },
@@ -25,10 +25,18 @@
         {
             "label": "docker: create sfdx container",
             "description": "create container",
-            "command": "docker run --rm -it -v \"${workspaceFolder}\":/app/sfdx --name ${lowercaseWorkspaceName}_sfdx_1 exiasfdc/sfdx:latest",
+            "command": "docker run --rm -d -it -v \"${workspaceFolder}\":${docker_workspace} --name ${lowercaseWorkspaceName}_sfdx_1 ${docker_image_name}",
             "termial": {
                 "name": "xysfdx"
             },
+            "isNativeCommand": true,
+            "platforms": ["docker"]
+        },
+        {
+            "label": "force:project:create",
+            "description": "create a sfdx project",
+            "termial": { "name": "xysfdx" },
+            "command": "docker run --rm -v \"${openFolderDailog:sfdx_project_directory}\":${docker_workspace} ${docker_image_name} sfdx force:project:create -n ${input:project_name} --template=${select:sfdx_project_template} && code \"${sfdx_project_directory}/${project_name}\"",
             "isNativeCommand": true,
             "platforms": ["docker"]
         },
@@ -79,5 +87,14 @@
             "platforms": ["docker"]
         }
     ],
-    "variables": {}
+    "variables": {
+        "docker_image_name": {
+            "label": "docker images name",
+            "value": "exiasfdc/sfdx:latest"
+        },
+        "docker_workspace": {
+            "label": "docker workspace",
+            "value": "/app/sfdx"
+        }
+    }
 }

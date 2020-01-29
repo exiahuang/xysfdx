@@ -1,6 +1,9 @@
 # Change Log
 
-First Release.
+## [0.1.2]
+
+-   support `force:project:create` command in docker
+-   support `pretty apex code` and `pretty visualforce code` command
 
 ## [0.1.1]
 
