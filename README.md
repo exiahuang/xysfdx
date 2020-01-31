@@ -5,7 +5,7 @@
 ## Features
 
 -   Less than 100k
--   Support [Dataloader v40.0.0~v47.0.0](https://github.com/exiahuang/dataloader).
+-   Support [Dataloader v40.0.0~v47.0.0](https://github.com/exiahuang/dataloader) Export/ExportAll/Insert/Update/Upsert/Delete.
 -   Support Docker to develope sfdx . Use [exiasfdc/sfdx](https://hub.docker.com/r/exiasfdc/sfdx) docker image, no need to config, just run it.
 -   Support using WSL/git bash/Msys2/MingW64/MingW32 to develope sfdx .
 -   Authenticated with oauth2.
@@ -70,8 +70,14 @@ You can diff with **any sfdc organization**.
 ## Dataloader
 
 -   support v40.0.0~v47.0.0
+-   support CSV Export/ExportAll/Insert/Update/Upsert/Delete
 
 ![xysfdx-dataloader](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-dataloader.gif)
+
+> If you use docker, you can only select csv/sdl file in current workspace.
+
+> TIPS: How to create sdl file ? I always use [SalesforceXyTools For Chrome](https://chrome.google.com/webstore/detail/salesforce-xytools/ehklfkbacogbanjgekccnbfdgjechlmf) to create it.
+
 
 ## Option Features
 

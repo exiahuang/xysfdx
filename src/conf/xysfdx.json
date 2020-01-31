@@ -614,6 +614,46 @@
             "command": "cd dataloader && ant start_export -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\" -Dapiversion=${select:dataloader_api_version}"
         },
         {
+            "label": "dataloader:export_all",
+            "description": "export all data, include deleted",
+            "termial": {
+                "name": "dataloader"
+            },
+            "command": "cd dataloader && ant export_all -Dsobject_name=${input:sobject_name} -Dsoql=\"${input:soql}\" -Dapiversion=${select:dataloader_api_version}"
+        },
+        {
+            "label": "dataloader:insert",
+            "description": "insert csv data",
+            "termial": {
+                "name": "dataloader"
+            },
+            "command": "cd dataloader && ant insert -Dsobject_name=${input:sobject_name} -Dcsv=\"${singleFileDailog:insert_csv_data}\" -Dsdl=\"${singleFileDailog:insert_sdl_file}\" -Dapiversion=${select:dataloader_api_version}"
+        },
+        {
+            "label": "dataloader:update",
+            "description": "update csv data",
+            "termial": {
+                "name": "dataloader"
+            },
+            "command": "cd dataloader && ant update -Dsobject_name=${input:sobject_name} -Dcsv=\"${singleFileDailog:update_csv_data}\" -Dsdl=\"${singleFileDailog:update_sdl_file}\" -Dapiversion=${select:dataloader_api_version}"
+        },
+        {
+            "label": "dataloader:upsert",
+            "description": "upsert csv data",
+            "termial": {
+                "name": "dataloader"
+            },
+            "command": "cd dataloader && ant upsert -Dsobject_name=${input:sobject_name} -Dcsv=\"${singleFileDailog:upsert_csv_data}\" -Dsdl=\"${singleFileDailog:upsert_sdl_file}\" -Dextid=\"${input:external_id}\" -Dapiversion=${select:dataloader_api_version}"
+        },
+        {
+            "label": "dataloader:delete",
+            "description": "delete csv data",
+            "termial": {
+                "name": "dataloader"
+            },
+            "command": "cd dataloader && ant delete -Dsobject_name=${input:sobject_name} -Dcsv=\"${singleFileDailog:delete_csv_data}\" -Dsdl=\"${singleFileDailog:delete_sdl_file}\" -Dapiversion=${select:dataloader_api_version}"
+        },
+        {
             "label": "xy:auth:username:login",
             "description": "open default termial",
             "command": "sfdx xy:auth:username:login -u ${input:sfdc_login_id} -p ${input:sfdc_login_password} -a ${input:sfdc_login_alias} -r ${select:instanceurl}"
@@ -1178,6 +1218,59 @@
             "label": "sfdc login password",
             "description": "",
             "value": ""
+        },
+        "insert_sdl_file": {
+            "label": "sdl file for insert",
+            "description": "",
+            "filters": { "insert.sdl": ["sdl"] },
+            "value": "./insert/insert.sdl"
+        },
+        "insert_csv_data": {
+            "label": "csv file for insert",
+            "description": "",
+            "filters": { "insert.csv": ["csv"] },
+            "value": "./insert/insert.csv"
+        },
+        "update_sdl_file": {
+            "label": "sdl file for update",
+            "description": "",
+            "filters": { "update.sdl": ["sdl"] },
+            "value": "./update/update.sdl"
+        },
+        "update_csv_data": {
+            "label": "csv file for update",
+            "description": "",
+            "filters": { "update.csv": ["csv"] },
+            "value": "./update/update.csv"
+        },
+        "upsert_sdl_file": {
+            "label": "sdl file for upsert",
+            "description": "",
+            "filters": { "upsert.sdl": ["sdl"] },
+            "value": "./upsert/upsert.sdl"
+        },
+        "upsert_csv_data": {
+            "label": "csv file for upsert",
+            "description": "",
+            "filters": { "upsert.csv": ["csv"] },
+            "value": "./upsert/upsert.csv"
+        },
+        "external_id": {
+            "label": "external id for upsert",
+            "description": "external id",
+            "value": "Id"
+        },
+        "delete_sdl_file": {
+            "label": "sdl file for delete",
+            "description": "",
+            "filters": { "delete.sdl": ["sdl"] },
+            "value": "./delete/delete.sdl"
+        },
+        "delete_csv_data": {
+            "label": "csv file for delete",
+            "description": "",
+            "filters": { "delete.csv": ["csv"] },
+            "value": "./delete/delete.csv"
         },
         "dataloader_api_version": {
             "label": "dataloader api version",
@@ -2195,6 +2288,26 @@
             "inActive": true,
             "notShowProcess": true,
             "command": "prettier --write \"${file}\" --single-quote=true --tab-width=4 --parser=html --end-of-line=lf --arrow-parens=always"
+        },
+        {
+            "optFeatureLabel": "pmd_apex_check",
+            "label": "PMD:Apex:Check",
+            "description": "PMD static analysis for Salesforce Apex.",
+            "filetypes": [".trigger", ".cls", ".component", ".page"],
+            "cwd": "${workspaceFolder}",
+            "inActive": true,
+            "command": "pmd -d \"${file}\" -R apex_ruleset.xml",
+            "excludePlatforms": ["docker"]
+        },
+        {
+            "optFeatureLabel": "pmd_apex_check",
+            "label": "PMD:Apex:Check:indocker",
+            "description": "PMD static analysis for Salesforce Apex.",
+            "filetypes": [".trigger", ".cls", ".component", ".page"],
+            "cwd": "${workspaceFolder}",
+            "inActive": true,
+            "command": "[ -f \"apex_ruleset.xml\" ] && pmd -d \"${file}\" -R apex_ruleset.xml | sed -e \"s/\\/app\\/sfdx/\\./g\"",
+            "platforms": ["docker"]
         },
         {
             "optFeatureLabel": "auto_save_to_sfdc",

@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.3]
+
+-   support dataloader : insert/update/upsert/delete/export_all
+
 ## [0.1.2]
 
 -   support `force:project:create` command in docker
