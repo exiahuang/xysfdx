@@ -149,8 +149,13 @@
         },
         {
             "label": "force:apex:test:run",
-            "description": "",
+            "description": "Run tests from a single class synchronously",
             "command": "sfdx force:apex:test:run --synchronous --classnames ${fileBasenameNoExtension}"
+        },
+        {
+            "label": "force:apex:test:run_and_retrieve_test_code_coverage",
+            "description": "Get Highlight Apex Code Coverage Result",
+            "command": "sfdx force:apex:test:run --classnames ${fileBasenameNoExtension} --resultformat human --outputdir .sfdx/tools/testresults/apex --loglevel error --codecoverage"
         },
         {
             "label": "force:apex:test:codecoverage",

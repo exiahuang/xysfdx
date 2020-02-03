@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.4]
+
+-   Get Highlight Apex Code Coverage Result
+
 ## [0.1.3]
 
 -   support dataloader : insert/update/upsert/delete/export_all
