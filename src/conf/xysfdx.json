@@ -79,37 +79,42 @@
         },
         {
             "label": "force:source:retrieve:from_package_xml",
-            "description": "",
+            "description": "All metadata components listed in a manifest",
             "command": "sfdx force:source:retrieve --manifest \"${singleFileDailog:package_xml}\""
         },
         {
+            "label": "force:source:retrieve:metadata:changeset_or_packagename",
+            "description": "input changeset or packagename",
+            "command": "sfdx force:source:retrieve -n \"${input:changeset_or_packagename}\""
+        },
+        {
             "label": "force:source:retrieve:metadata",
-            "description": "",
+            "description": "retrieve metadata by selected",
             "command": "sfdx force:source:retrieve --metadata \"${multiselect:METADATA}\""
         },
         {
             "label": "force:source:retrieve:apexclass",
-            "description": "",
+            "description": "A specific Apex class",
             "command": "sfdx force:source:retrieve -m ApexClass:${input:ApexClass_Name}"
         },
         {
             "label": "force:source:retrieve:metadata:base",
-            "description": "",
+            "description": "retrieve ApexClass, ApexPage, ApexComponent, ApexTrigger",
             "command": "sfdx force:source:retrieve --metadata \"${input:base_metadata}\""
         },
         {
             "label": "force:source:retrieve:metadata:standard-sobject",
-            "description": "",
+            "description": "retrieve standard sobject",
             "command": "sfdx force:source:retrieve --metadata \"${multiselect:standard_sobject}\""
         },
         {
             "label": "force:source:retrieve:sourcepath",
-            "description": "",
+            "description": "Select single Source file to retrieve",
             "command": "sfdx force:source:retrieve --sourcepath \"${openFolderDailog:sourcepath}\""
         },
         {
             "label": "force:source:retrieve:many_files",
-            "description": "",
+            "description": "Select Source files to retrieve",
             "command": "sfdx force:source:retrieve -p \"${multiFilesDailog:sfdcsourcesfiles}\""
         },
         {
@@ -136,6 +141,26 @@
             "label": "force:source:deploy:metadata",
             "description": "",
             "command": "sfdx force:source:deploy --loglevel fatal --metadata \"${multiselect:METADATA}\""
+        },
+        {
+            "label": "force:mdapi:retrieve:changeset_or_packagename",
+            "description": "input changeset or packagename get zip package!",
+            "command": "sfdx force:mdapi:retrieve -r \"changeset/${changeset_or_packagename}\" -p \"${input:changeset_or_packagename}\""
+        },
+        {
+            "label": "force:mdapi:deploy:select_unpackaged_zip",
+            "description": "select unpackaged.zip and deploy to sfdc",
+            "command": "sfdx force:mdapi:deploy -f \"${singleFileDailog:unpackaged_zip}\" -u ${select:SFDX_ALIAS} "
+        },
+        {
+            "label": "force:mdapi:deploy:report",
+            "description": "Checks the current status of an asynchronous metadata deployment",
+            "command": "sfdx force:mdapi:deploy:report"
+        },
+        {
+            "label": "force:mdapi:deploy:cancel",
+            "description": "Cancels an asynchronous metadata deployment.",
+            "command": "sfdx force:mdapi:deploy:cancel"
         },
         {
             "label": "force:apex:execute",
@@ -1222,6 +1247,12 @@
         "sfdc_login_password": {
             "label": "sfdc login password",
             "description": "",
+            "value": ""
+        },
+        "unpackaged_zip": {
+            "label": "unpackaged_zip",
+            "description": "",
+            "filters": { "unpackaged_zip": ["zip"] },
             "value": ""
         },
         "insert_sdl_file": {

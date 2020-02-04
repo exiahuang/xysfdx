@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.1.5]
+
+-   `force:mdapi:retrieve:changeset_or_packagename` : retrieve metadata by changeset or packagename
+-   `force:mdapi:deploy:report`
+-   `force:mdapi:deploy:select_unpackaged_zip`
+-   `force:mdapi:deploy:cancel`
+
 ## [0.1.4]
 
 -   Get Highlight Apex Code Coverage Result
