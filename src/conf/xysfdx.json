@@ -48,6 +48,16 @@
             "command": "sfdx force:org:open -p ${select:sfdc_url} -u ${select:SFDX_ALIAS}"
         },
         {
+            "label": "force:org:open:visualforce",
+            "description": "open visualforce force page",
+            "command": "sfdx force:org:open -p /apex/${fileBasenameNoExtension}"
+        },
+        {
+            "label": "force:org:open:url",
+            "description": "open url",
+            "command": "sfdx force:org:open -p ${input:sfdc_start_url}"
+        },
+        {
             "label": "force:config:set:defaultusername",
             "description": "",
             "command": "sfdx force:config:set defaultusername=${select:SFDX_ALIAS}"
@@ -93,9 +103,24 @@
             "command": "sfdx force:source:retrieve --metadata \"${multiselect:METADATA}\""
         },
         {
-            "label": "force:source:retrieve:apexclass",
+            "label": "force:source:retrieve:metadata:single-file",
+            "description": "retrieve metadata",
+            "command": "sfdx force:source:retrieve -m ${select:METADATA}:${input:metadata_api_name}"
+        },
+        {
+            "label": "force:source:retrieve:metadata:apexclass",
             "description": "A specific Apex class",
             "command": "sfdx force:source:retrieve -m ApexClass:${input:ApexClass_Name}"
+        },
+        {
+            "label": "force:source:retrieve:metadata:trigger",
+            "description": "A specific trigger",
+            "command": "sfdx force:source:retrieve -m ApexTrigger:${input:ApexClass_Name}"
+        },
+        {
+            "label": "force:source:retrieve:metadata:sobject",
+            "description": "A specific CustomObject",
+            "command": "sfdx force:source:retrieve -m CustomObject:${input:CustomObject_Name}"
         },
         {
             "label": "force:source:retrieve:metadata:base",
@@ -429,6 +454,11 @@
             "label": "force:data:soql:query:write_to_file",
             "description": "",
             "command": "sfdx force:data:soql:query -q \"${input:soql}\" --resultformat ${select:soql_result_format} > ${input:soql_result}"
+        },
+        {
+            "label": "xysfdx:data:migrate:from_org1_to_org2",
+            "description": "run soql in org1 and import data to org2.",
+            "command": "sfdx force:data:tree:export -q \"${input:soql}\" --outputdir=${data_dir} -u ${select:SFDX_ALIAS} && sfdx force:data:tree:import -f ${data_dir}/${input:sobject_name}.json"
         },
         {
             "label": "force:data:tree:export",
@@ -793,6 +823,12 @@
             "description": "salesforce code format. page, component, cmp file",
             "cwd": "${workspaceFolder}",
             "command": "prettier --write \"${file}\" --single-quote=true --tab-width=4 --parser=html --end-of-line=lf --arrow-parens=always"
+        },
+        {
+            "label": "pretty (.json, .javascript, .js, .md, .css, etc)",
+            "description": "pretty file",
+            "cwd": "${workspaceFolder}",
+            "command": "prettier --write \"${file}\" --single-quote=true --end-of-line=lf --arrow-parens=always --tab-width=4"
         }
     ],
     "variables": {
@@ -804,6 +840,10 @@
                 "https://login.salesforce.com",
                 "https://test.salesforce.com"
             ]
+        },
+        "sfdc_start_url": {
+            "label": "sfdc startURL, example: /001, /005, etc ",
+            "value": ""
         },
         "sfdc_url": {
             "label": "open sfdc url",

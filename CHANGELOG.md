@@ -1,5 +1,8 @@
 # Change Log
 
+## [0.1.6]
+-   Add [exiahuang/sfdc-cli](https://github.com/exiahuang/sfdc-cli) support,The core of [exiahuang/SalesforceXyTools](https://github.com/exiahuang/SalesforceXyTools).
+
 ## [0.1.5]
 
 -   `force:mdapi:retrieve:changeset_or_packagename` : retrieve metadata by changeset or packagename

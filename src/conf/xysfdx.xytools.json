@@ -1,0 +1,809 @@
+{
+    "tasks": [
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:project:init",
+            "description": "init sfdc project",
+            "command": "sfdc project:init -d ${input:SFDC_PROJECT_DIR} -u ${input:username} -p ${input:password} -s ${SRC_DIR} -v ${input:API_VERSION} ${select:IS_SANDBOX}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:retrieve",
+            "description": "retrieve metadata",
+            "termial": {
+                "name": "xytools:sfdc"
+            },
+            "dockerOptions": {
+                "openTTY": true
+            },
+            "command": "sfdc meta:retrieve -d . -n package.zip -m ${multiselect:SFDC_METADATA} --unzip --delete_after_unzip"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:template:apex:create",
+            "description": "init apex from tempalte",
+            "command": "sfdc meta:template:apex -n ${input:APEX_API_NAME} --template ${select:APEX_TEMPLATE}",
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "OpenFile",
+                    "params": ["${SRC_DIR}/classes/${APEX_API_NAME}.cls"]
+                }
+            ]
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:template:trigger:create",
+            "description": "init trigger from tempalte",
+            "command": "sfdc meta:template:trigger -n ${input:TRIGGER_API_NAME} --sobject ${input:SOBJECT_NAME} --template ${select:TRIGGER_TEMPLATE}",
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "OpenFile",
+                    "params": [
+                        "${SRC_DIR}/triggers/${TRIGGER_API_NAME}.trigger"
+                    ]
+                }
+            ]
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:template:page:create",
+            "description": "init page(visualforce) from tempalte",
+            "command": "sfdc meta:template:page -n ${input:PAGE_API_NAME} --template ${select:PAGE_TEMPLATE}",
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "OpenFile",
+                    "params": ["${SRC_DIR}/pages/${PAGE_API_NAME}.page"]
+                }
+            ]
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:template:component:create",
+            "description": "init component(visualforce) from tempalte",
+            "command": "sfdc meta:template:component -n ${input:COMPONENT_API_NAME}",
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "OpenFile",
+                    "params": [
+                        "${SRC_DIR}/components/${COMPONENT_API_NAME}.component"
+                    ]
+                }
+            ]
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:new:current_file(save-to-sfdc-server)",
+            "description": "create metadata in sfdc server",
+            "command": "sfdc meta:new -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:update:current_file(save-to-sfdc-server)",
+            "description": "update metadata in sfdc server",
+            "command": "sfdc meta:update -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:update:force",
+            "description": "force update metadata in sfdc server",
+            "command": "sfdc meta:update -s ${file} --force"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:delete:current_file",
+            "description": "delete metadata in sfdc server",
+            "command": "sfdc meta:delete -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:refresh:current_file",
+            "description": "refresh metadata in sfdc server",
+            "command": "sfdc meta:refresh -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:attr:current_file",
+            "description": "print metadata attribute",
+            "command": "sfdc meta:attr -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:refresh:dir",
+            "description": "refresh metadata dir from sfdc server",
+            "command": "sfdc meta:refresh:dir -d ${SRC_DIR}/${select:SFDC_METADATA_DIR}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:build:packagexml:server",
+            "description": "build all packagexml from server",
+            "command": "sfdc packagexml:server -d . -n ${input:PACKAGE_XML_NAME}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:build:packagexml:scan:local:directory",
+            "description": "scan local directory to build package.xml",
+            "command": "sfdc packagexml:local --scandir ${SRC_DIR} --savedir . -n ${input:PACKAGE_XML_NAME} -v ${input:API_VERSION}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:apex:execute:current-file",
+            "description": "Executes anonymous Apex code",
+            "command": "sfdc apex:execute -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:apex:execute:input-file-path",
+            "description": "Executes anonymous Apex code",
+            "command": "sfdc apex:execute -s ${input:file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:apex:test:run:current-file",
+            "description": "run apex testclass",
+            "command": "sfdc apex:test:run -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:apex:test:run:input-file-path",
+            "description": "run apex testclass",
+            "command": "sfdc apex:test:run -s ${input:file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:apex:test:coverage",
+            "description": "run apex testclass",
+            "command": "sfdc apex:test:coverage -f ${input:TEST_COVERAGE_PATH}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:list",
+            "description": "list sobject",
+            "command": "sfdc sobject:list"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:list:save-as-markdown",
+            "description": "list sobject and save as markdown file",
+            "command": "sfdc sobject:list > ${input:SOBJECT_LIST_MD_FILE}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:fields:desc",
+            "description": "describe sobject fields",
+            "command": "sfdc sobject:fields:desc -s ${input:sobject_api_name}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:fields:desc:save-as-markdown",
+            "description": "describe sobject fields",
+            "command": "sfdc sobject:fields:desc -s ${input:sobject_api_name} > ${input:SOBJECT_DESC_MD_FILE}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:export:xlsx",
+            "description": "export sfdc sobject as excel file",
+            "command": "sfdc sobject:export:xlsx -s ${input:SOBJECT_XLSX_FILE}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:data:create",
+            "description": "insert sobject data from json data",
+            "command": "sfdc sobject:data:create -s ${input:sobject_api_name} --data ${input:json_data_file_path}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:data:update",
+            "description": "update sobject data from json data",
+            "command": "sfdc sobject:data:update -s ${input:sobject_api_name} --id ${input:sobject_id}  --data ${input:json_data_file_path}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:data:get",
+            "description": "get sobject data from sfdc server",
+            "command": "sfdc sobject:data:get -s ${input:sobject_api_name} --id ${input:sobject_id}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:sobject:data:delete",
+            "description": "delete sobject data from sfdc server",
+            "command": "sfdc sobject:data:delete -s ${input:sobject_api_name} --id ${input:sobject_id}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:data:soql:query",
+            "description": "soql query",
+            "command": "sfdc data:soql:query -s \"${input:SOQL}\""
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:data:tooling:query",
+            "description": "tooling query",
+            "command": "sfdc data:tooling:query -s \"${input:SOQL}\""
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:call:rest:api:GET",
+            "description": "call salesforce rest api, GET method",
+            "command": "sfdc call:rest:api -e \"${input:REST_API_ENDPOINT}\""
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:call:rest:api:with-params",
+            "description": "call salesforce rest api, ",
+            "command": "sfdc call:rest:api -m ${select:REST_API_METHOD} -e \"${input:REST_API_ENDPOINT}\" --use_params --params ${input:REST_JSON_DATA_FILE_PATH}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:snippet:soql",
+            "description": "soql snippet creator ",
+            "command": "sfdc coder:snippet:soql -s ${input:sobject_api_name} ${select:INCLUDE_CUSTOM_FIELD_ONLY} ${select:INCLUDE_UPDATEABLE_FIELD_ONLY} ${select:INCLUDE_COMMENT} ${select:INCLUDE_RELATIONSHIP}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:apex:snippet:insert:data:from:soql",
+            "description": "create apex code from soql query ",
+            "command": "sfdc coder:apex:snippet:insert:data:from:soql -s \"${input:SOQL}\""
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:apex:snippet:insert:ramdam:data",
+            "description": "create insert sobject code, ramdam data",
+            "command": "sfdc coder:apex:snippet:insert:ramdam:data -s ${input:SOBJECT_API_NAME} --all_fields"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:apex:testclass:generator",
+            "description": "generator testclass from apex code",
+            "command": "sfdc coder:apex:testclass:generator -f ${input:apex_code_file_path}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:apex:page:generator",
+            "description": "generator VisualForce/Controller/DTO/DAO Code from sobject",
+            "command": "sfdc coder:apex:page:generator --sobject ${input:sobject_api_name} --savedir ${input:CODER_SAVE_PATH} ${select:INCLUDE_CUSTOM_FIELD_ONLY} ${select:INCLUDE_VALIDATE} "
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:copy:aura",
+            "description": "copy lightning",
+            "command": "sfdc coder:copy:aura -f ${input:from_lightning_path} -t ${input:to_lightning_path}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:coder:permission:build",
+            "description": "create permission metadata",
+            "command": "sfdc coder:permission:build --sobject_dir ${SRC_DIR}/objects --savefile ${SRC_DIR}/permissionsets/${input:PERMISSION_FILE_NAME} --include_all_sobject_permission",
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "OpenFile",
+                    "params": [
+                        "${SRC_DIR}/permissionsets/${PERMISSION_FILE_NAME}"
+                    ]
+                }
+            ]
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:folder:list",
+            "description": "list folder",
+            "command": "sfdc folder:list -n ${select:SFDC_FOLDER}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:download:attachment",
+            "description": "download salesforce attachment",
+            "termial": {
+                "name": "xytools:sfdc:download:attachment"
+            },
+            "command": "sfdc download:attachment --savedir ${input:DOWNLOAD_DIR} --filename \"{Title}_v{VersionNumber}.{FileExtension}\" --limit 2000"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:init:ant:migration:tool",
+            "description": "init Ant Migration Tool",
+            "command": "sfdc ant:migration:tool"
+        }
+    ],
+    "variables": {
+        "PERMISSION_FILE_NAME": {
+            "label": "permission filename",
+            "value": "dev_permission.permissionset"
+        },
+        "IS_SANDBOX": {
+            "label": "is sanbox?",
+            "description": "",
+            "value": [" ", "--sandbox"]
+        },
+        "SFDC_PROJECT_DIR": {
+            "label": "sfdc project directory, default .",
+            "value": "."
+        },
+        "DOWNLOAD_DIR": {
+            "label": "download dir",
+            "description": "",
+            "value": "./tmp/download"
+        },
+        "SFDC_FOLDER": {
+            "label": "sfdc folder",
+            "description": "",
+            "value": ["ReportFolder", "EmailTemplate"]
+        },
+        "CODER_SAVE_PATH": {
+            "label": "generator save directory",
+            "description": "",
+            "value": "./tmp/code-generator/src"
+        },
+        "INCLUDE_VALIDATE": {
+            "label": "include field validate",
+            "description": "",
+            "value": ["--include_validate", " "]
+        },
+        "INCLUDE_CUSTOM_FIELD_ONLY": {
+            "label": "only include custom field",
+            "description": "",
+            "value": ["--custom_field_only", " "]
+        },
+        "INCLUDE_UPDATEABLE_FIELD_ONLY": {
+            "label": "only updateable field",
+            "description": "",
+            "value": ["--updateable_field_only", " "]
+        },
+        "INCLUDE_COMMENT": {
+            "label": "include comment",
+            "description": "",
+            "value": ["--include_comment", " "]
+        },
+        "INCLUDE_RELATIONSHIP": {
+            "label": "include relationship",
+            "description": "",
+            "value": [" ", "--include_relationship"]
+        },
+        "REST_API_METHOD": {
+            "label": "rest api method",
+            "description": "",
+            "value": ["GET", "POST", "DELETE", "UPDATE"]
+        },
+        "REST_API_ENDPOINT": {
+            "label": "sfdc rest api endpoint, example /services/data/v47.0/sobjects/Account",
+            "value": ""
+        },
+        "REST_JSON_DATA_FILE_PATH": {
+            "label": "sfdc rest api data",
+            "value": "./data/rest_data.json"
+        },
+        "SOBJECT_XLSX_FILE": {
+            "label": "sobject excel file path",
+            "value": "./log/sobject.xlsx"
+        },
+        "SOBJECT_LIST_MD_FILE": {
+            "label": "sobject list markdown file path",
+            "value": "./log/sobject_list.md"
+        },
+        "SOBJECT_DESC_MD_FILE": {
+            "label": "sobject fields describe markdown file path",
+            "value": "./log/sobject_desc.md"
+        },
+        "TEST_COVERAGE_PATH": {
+            "label": "apex coverage log path",
+            "value": "./log/apex_coverage.log"
+        },
+        "PACKAGE_XML_NAME": {
+            "label": "package.xml name",
+            "value": "package.xml"
+        },
+        "APEX_API_NAME": {
+            "label": "APEX API NAME, no need .cls",
+            "value": ""
+        },
+        "TRIGGER_API_NAME": {
+            "label": "Trigger api name, no need .trigger",
+            "value": ""
+        },
+        "API_VERSION": {
+            "label": "api version",
+            "value": "47.0"
+        },
+        "SRC_DIR": {
+            "label": "source directory, default src",
+            "value": "src"
+        },
+        "SFDC_METADATA": {
+            "label": "sfdc metadata",
+            "description": "",
+            "separator": " ",
+            "value": [
+                "ActionLinkGroupTemplate",
+                "AnalyticSnapshot",
+                "ApexClass",
+                "ApexComponent",
+                "ApexPage",
+                "ApexTestSuite",
+                "ApexTrigger",
+                "AppMenu",
+                "ApprovalProcess",
+                "AssignmentRules",
+                "AuraDefinitionBundle",
+                "AuthProvider",
+                "AutoResponseRules ",
+                "BotVersion",
+                "BrandingSet",
+                "CallCenter",
+                "CampaignInfluenceModel",
+                "CaseSubjectParticle",
+                "Certificate",
+                "ChatterExtension",
+                "CleanDataService",
+                "CMSConnectSource",
+                "Community",
+                "CommunityTemplateDefinition",
+                "CommunityThemeDefinition",
+                "ConnectedApp",
+                "ContentAsset",
+                "CorsWhitelistOrigin",
+                "CspTrustedSite",
+                "CustomApplication",
+                "CustomApplicationComponent",
+                "CustomFeedFilter",
+                "CustomLabels",
+                "CustomObject",
+                "CustomObjectTranslation",
+                "CustomPageWebLink",
+                "CustomPermission",
+                "CustomSite",
+                "CustomTab",
+                "Dashboard",
+                "DataCategoryGroup",
+                "DelegateGroup",
+                "Document",
+                "DuplicateRule",
+                "EclairGeoData",
+                "EmailServicesFunction",
+                "EmailTemplate",
+                "EmbeddedServiceBranding",
+                "EmbeddedServiceConfig",
+                "EmbeddedServiceFieldService",
+                "EmbeddedServiceLiveAgent",
+                "EntitlementProcess",
+                "EntitlementTemplate",
+                "EscalationRules",
+                "EventDelivery",
+                "EventSubscription",
+                "ExternalDataSource",
+                "ExternalServiceRegistration",
+                "FeatureParameterBoolean",
+                "FeatureParameterDate",
+                "FeatureParameterInteger",
+                "FlexiPage",
+                "Flow",
+                "FlowCategory",
+                "FlowDefinition",
+                "Folder",
+                "GlobalPicklist",
+                "GlobalValueSet",
+                "GlobalValueSetTranslation",
+                "Group",
+                "HomePageComponent",
+                "HomePageLayout",
+                "InstalledPackage",
+                "KeywordList",
+                "Layout",
+                "Letterhead",
+                "LightningBolt",
+                "LightningComponentBundle",
+                "LightningExperienceTheme",
+                "LiveChatAgentConfig",
+                "LiveChatButton",
+                "LiveChatDeployment",
+                "LiveChatSensitiveDataRule",
+                "ManagedTopics",
+                "MatchingRule",
+                "MilestoneType",
+                "MlDomain",
+                "ModerationRule",
+                "NamedCredential",
+                "Network",
+                "NetworkBranding",
+                "PathAssistant",
+                "PermissionSet",
+                "PlatformCachePartition",
+                "Portal",
+                "PostTemplate",
+                "PresenceDeclineReason",
+                "PresenceUserConfig",
+                "Profile",
+                "ProfileActionOverride",
+                "ProfilePasswordPolicy",
+                "Queue",
+                "QueueRoutingConfig",
+                "QuickAction",
+                "RemoteSiteSetting",
+                "Report",
+                "ReportType",
+                "Role",
+                "RoleOrTerritory",
+                "SamlSsoConfig",
+                "Scontrol",
+                "ServiceChannel",
+                "ServicePresenceStatus",
+                "SharingRules",
+                "SiteDotCom",
+                "Skill",
+                "StandardValueSet",
+                "StandardValueSetTranslation",
+                "StaticResource",
+                "SynonymDictionary",
+                "Territory",
+                "Territory2",
+                "Territory2Model",
+                "Territory2Rule",
+                "Territory2Type",
+                "TopicsForObjects",
+                "TransactionSecurityPolicy",
+                "Translations",
+                "UserCriteria",
+                "WaveApplication",
+                "WaveDashboard",
+                "WaveDataflow",
+                "WaveDataset",
+                "WaveLens",
+                "WaveTemplateBundle",
+                "WaveXmd",
+                "Workflow"
+            ]
+        },
+        "SFDC_METADATA_DIR": {
+            "label": "sfdc metadata directory",
+            "description": "",
+            "separator": " ",
+            "value": [
+                "actionLinkGroupTemplates",
+                "analyticSnapshots",
+                "articleTypes",
+                "classes",
+                "components",
+                "pages",
+                "apexTestSuite",
+                "triggers",
+                "appMenus",
+                "approvalProcesses",
+                "assignmentRules",
+                "aura",
+                "authProviders",
+                "autoResponseRules",
+                "bots",
+                "brandingSets",
+                "callCenters",
+                "campaignInfluenceModels",
+                "caseSubjectParticles",
+                "certs",
+                "chatterExtensions",
+                "cleanDataServices",
+                "cMSConnectSources",
+                "communities",
+                "communityTemplateDefinitions",
+                "communityThemeDefinitions",
+                "connectedApps",
+                "contentAssets",
+                "corsWhitelistOrigins",
+                "cspTrustedSite",
+                "applications",
+                "applicationComponents",
+                "feedFilters",
+                "labels",
+                "objects",
+                "objectTranslations",
+                "customPageWebLink",
+                "permissions",
+                "sites",
+                "tabs",
+                "values",
+                "customValues",
+                "dashboards",
+                "dataCategoryGroups",
+                "delegateGroups",
+                "documents",
+                "duplicateRules",
+                "eclairGeoDatas",
+                "emailServices",
+                "email",
+                "embeddedServiceBrandings",
+                "embeddedServiceConfigs",
+                "embeddedServiceFieldServices",
+                "embeddedServiceLiveAgents",
+                "entitlementProcesses",
+                "entitlementTemplates",
+                "escalationRules",
+                "eventDeliveries",
+                "eventSubscriptions",
+                "externalDataSources",
+                "externalServiceRegistrations",
+                "featureParameterBooleans",
+                "featureParameterDates",
+                "featureParameterIntegers",
+                "flexipages",
+                "flows",
+                "flowCategories",
+                "flowDefinitions",
+                "folders",
+                "globalPicklists",
+                "globalPicklistValues",
+                "globalValueSets",
+                "globalValueSetTranslations",
+                "groups",
+                "homePageComponents",
+                "homePageLayouts",
+                "installedPackages",
+                "keywordLists",
+                "layouts",
+                "letterheads",
+                "lightningBolts",
+                "lwc",
+                "lightningExperienceThemes",
+                "liveChatAgentConfigs",
+                "liveChatButtons",
+                "liveChatDeployments",
+                "liveChatSensitiveDataRules",
+                "managedTopics",
+                "matchingRules",
+                "metadata",
+                "metadataWithContents",
+                "milestoneTypes",
+                "mlDomains",
+                "moderationRules",
+                "namedCredentials",
+                "networks",
+                "networkBrandings",
+                "packages",
+                "pathAssistants",
+                "permissionsets",
+                "platformCachePartitions",
+                "portals",
+                "postTemplates",
+                "presenceDeclineReasons",
+                "presenceUserConfigs",
+                "profiles",
+                "profileActionOverrides",
+                "profilePasswordPolicies",
+                "queues",
+                "queueRoutingConfigs",
+                "quickActions",
+                "remoteSiteSettings",
+                "reports",
+                "reportTypes",
+                "roles",
+                "roleOrTerritorys",
+                "samlSsoConfigs",
+                "scontrols",
+                "serviceChannels",
+                "servicePresenceStatus",
+                "sharedTos",
+                "sharingBaseRules",
+                "sharingRules",
+                "sharingSets",
+                "siteDotComs",
+                "skills",
+                "standardValueSets",
+                "standardValueSetTranslations",
+                "staticresources",
+                "synonymDictionaries",
+                "territories",
+                "territory2s",
+                "territory2Models",
+                "territory2Rules",
+                "territory2Types",
+                "topicsForObjects",
+                "transactionSecurityPolicies",
+                "translations",
+                "userCriterias",
+                "waveApplications",
+                "waveDataflows",
+                "waveDashboards",
+                "waveDatasets",
+                "waveLens",
+                "waveTemplateBundles",
+                "waveXmds",
+                "workflows"
+            ]
+        },
+        "APEX_TEMPLATE": {
+            "label": "apex metadata template",
+            "description": "",
+            "separator": " ",
+            "value": [
+                "ApexClass.cls",
+                "ApexClassNoConstructor.cls",
+                "BatchApexClass.cls",
+                "BDDUnitTestApexClass.cls",
+                "ControllerExtension.cls",
+                "DomainClass.cls",
+                "EmailServiceApexClass.cls",
+                "ExceptionApexClass.cls",
+                "HttpCalloutMock.cls",
+                "SchedulableApexClass.cls",
+                "SelectorClass.cls",
+                "ServiceClass.cls",
+                "TriggerHandler.cls",
+                "UnitTestApexClass.cls",
+                "UrlRewriterApexClass.cls",
+                "WebserviceClass.cls",
+                "WebServiceMock.cls"
+            ]
+        },
+        "TRIGGER_TEMPLATE": {
+            "label": "trigger metadata template",
+            "description": "",
+            "separator": " ",
+            "value": [
+                "ApexTriggerAllEvents.trigger",
+                "ApexTriggerBulk.trigger",
+                "ApexTrigger.trigger",
+                "DomainTrigger.trigger"
+            ]
+        },
+        "PAGE_TEMPLATE": {
+            "label": "page metadata template",
+            "description": "",
+            "separator": " ",
+            "value": ["ApexPage.page", "HeaderPageBlock.page"]
+        }
+    },
+    "onSaveEvents": [
+        {
+            "optFeatureLabel": "xytools.auto_save_to_server",
+            "label": "xytools: auto save file to sfdc server.",
+            "description": "xytools: auto save file to sfdc server.",
+            "filetypes": [".trigger", ".cls", ".component", ".page"],
+            "cwd": "${workspaceFolder}",
+            "inActive": true,
+            "command": "sfdc meta:update -s \"${file}\""
+        }
+    ]
+}
