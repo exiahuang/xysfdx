@@ -83,6 +83,13 @@
         {
             "optFeatureLabel": "xytools",
             "inActive": true,
+            "label": "xytools:sfdc:meta:cache",
+            "description": "refresh sfdc metadata cache: .xyconfig/metadata.cache",
+            "command": "sfdc meta:cache"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
             "label": "xytools:sfdc:meta:new:current_file(save-to-sfdc-server)",
             "description": "create metadata in sfdc server",
             "command": "sfdc meta:new -s ${file}"
@@ -114,6 +121,24 @@
             "label": "xytools:sfdc:meta:refresh:current_file",
             "description": "refresh metadata in sfdc server",
             "command": "sfdc meta:refresh -s ${file}"
+        },
+        {
+            "optFeatureLabel": "xytools",
+            "inActive": true,
+            "label": "xytools:sfdc:meta:diff:with:server",
+            "description": "diff metadata with sfdc server",
+            "command": "sfdc meta:refresh -s .xyconfig/.tmp/${relativeFile}",
+            "afterTriggers": [
+                {
+                    "type": "buildin",
+                    "fn": "Diff",
+                    "params": [
+                        "${file}",
+                        ".xyconfig/.tmp/${relativeFile}",
+                        "${workspaceFolderBasename} Local <-> Server"
+                    ]
+                }
+            ]
         },
         {
             "optFeatureLabel": "xytools",

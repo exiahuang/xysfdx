@@ -1,6 +1,13 @@
 # Change Log
 
+## [0.1.7]
+
+-   support git.
+-   support `xytools:sfdc:meta:cache`.
+-   support `xytools:sfdc:meta:diff:with:server`.
+
 ## [0.1.6]
+
 -   Add [exiahuang/sfdc-cli](https://github.com/exiahuang/sfdc-cli) support,The core of [exiahuang/SalesforceXyTools](https://github.com/exiahuang/SalesforceXyTools).
 
 ## [0.1.5]

@@ -103,7 +103,8 @@
                 "xysfdx.optionFeatures": {
                     "type": "array",
                     "default": [
-                        "auto_run_apex_anonymous"
+                        "auto_run_apex_anonymous",
+                        "git"
                     ],
                     "description": "after save events."
                 }

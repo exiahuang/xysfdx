@@ -20,6 +20,9 @@
     -   auto save to sfdc server
     -   deploy to any sfdc organization
     -   pretty code: pretty `.cmp`, `.page`, `.component`, `.trigger`, `.cls` file
+    -   support base git command.
+    -   support [exiahuang/sfdc-cli](https://github.com/exiahuang/sfdc-cli).
+	
 
 ## Shortkey
 
@@ -121,7 +124,16 @@ config:
         "auto_run_apex_anonymous",
 
         // pretty `.apex` file
-        "pretty_apex_anonymous"
+        "pretty_apex_anonymous",
+		
+		// use git 
+        "git",
+		
+		// use sfdc-cli, read more: https://github.com/exiahuang/sfdc-cli
+        "xytools",
+        "xytools.auto_save_to_server",
+        "xytools.auto_run_apex_anonymous",
+		
     ]
 }
 ```
@@ -155,6 +167,30 @@ config:
 > read more about [prettier-plugin-apex](https://github.com/dangmai/prettier-plugin-apex)
 
 ![xysfdx-pretty_apex](https://raw.githubusercontent.com/exiahuang/xycode-doc/gh-pages/images/xysfdx-pretty_apex.gif)
+
+
+### use git
+
+set `git` option features, then use the base git command.
+
+[git config json](https://github.com/exiahuang/xysfdx/blob/master/src/conf/xysfdx.git.json)
+
+### use sfdc-cli
+
+set `xytools` option features, then use the `sfdc-cli` command.
+
+- "xytools" : use the `sfdc-cli` command
+- "xytools.auto_save_to_server": after save apex/trigger/page/component, it will auto save to sfdc server.
+- "xytools.auto_run_apex_anonymous": run .apex file after save.
+
+> please do not use `xytools.auto_save_to_server` and `auto_save_to_server` in the same time
+> please do not use `xytools.auto_run_apex_anonymous` and `auto_run_apex_anonymous` in the same time
+
+read more about `sfdc-cli`:
+
+- [sfdc-cli](https://github.com/exiahuang/sfdc-cli) is a sfdc development kit.
+- sfdc-cli is from [exiahuang/SalesforceXyTools](https://github.com/exiahuang/SalesforceXyTools)
+
 
 ## For Docker user
 

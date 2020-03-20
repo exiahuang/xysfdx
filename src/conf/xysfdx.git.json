@@ -1,0 +1,330 @@
+{
+    "tasks": [
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:version",
+            "command": "git --version"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:init",
+            "command": "git init"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:add",
+            "command": "git add ${multiFilesDailog:git_add_files}"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:add:folder",
+            "command": "git add ${openFolderDailog:git_add_folder}"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:add:all",
+            "command": "git add --all"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:clone",
+            "command": "git clone ${input:git_url}"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:pretty",
+            "command": "git log ${git_log_format} --date-order"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:pretty:graph",
+            "command": "git log ${git_log_format} --date-order --graph"
+        },
+        {
+            "description": "5 commits to output.",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:pretty:5",
+            "command": "git log -5 ${git_log_format}"
+        },
+        {
+            "description": "Limit the number of commits to output.",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:pretty:n",
+            "command": "git log -${input:number} ${git_log_format}"
+        },
+        {
+            "description": "Limit the number. Draw a text-based graphical.",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:pretty:graph:n",
+            "command": "git log -${input:number} ${git_log_format} --graph"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:fetch:all",
+            "command": "git fetch --all"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:pull:all",
+            "command": "git pull --all"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:branch:list",
+            "command": "git branch ${select:git_branch}"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:branch:list_local",
+            "command": "git branch"
+        },
+        {
+            "description": "Switch branches or restore working tree files",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:checkout:branch_name",
+            "command": "git checkout ${input:git_branch_name}"
+        },
+        {
+            "description": "a new branch to be created as if git-branch[1] were called and then checked out.",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:checkout:new_branch_name",
+            "command": "git checkout -b ${input:git_branch_name}"
+        },
+        {
+            "description": "delete branch",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:branch:delete",
+            "command": "git branch --delete ${input:git_branch_name}"
+        },
+        {
+            "description": "The command’s second form creates a new branch head named <new_branch_name> at <sha1_of_commit>",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:branch:create_at_commit",
+            "command": "git branch ${input:new_branch_name} ${input:sha1_of_commit}"
+        },
+        {
+            "description": "checkout master",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:checkout:master",
+            "command": "git checkout master"
+        },
+        {
+            "description": "lists all tags",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:tag",
+            "command": "git tag"
+        },
+        {
+            "description": "Show the working tree status",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:status",
+            "command": "git status -s"
+        },
+        {
+            "description": "Show commit logs",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log",
+            "command": "git log"
+        },
+        {
+            "description": "Show commit logs. Generate a diffstat",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:stat",
+            "command": "git log --stat"
+        },
+        {
+            "description": "matches the specified pattern (regular expression).",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:log:search",
+            "command": "git log ${git_log_format} --grep ${input:keyword} "
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:show",
+            "command": "git show"
+        },
+        {
+            "description": "Manage reflog information",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:reflog",
+            "command": "git reflog"
+        },
+        {
+            "description": "save your changes to the local repository",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:commit",
+            "command": "git commit -m \"${input:git_commit_message}\""
+        },
+        {
+            "description": "Create a new connection to a remote repository.",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:remote:add:origin",
+            "command": "git remote add origin ${input:git_remote_url}"
+        },
+        {
+            "description": "List the remote connections you have to other repositories",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:remote:verbose",
+            "command": "git remote -v"
+        },
+        {
+            "description": "upload local repository content to a remote repository",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:push:origin_to_remote_branch",
+            "command": "git push -u origin ${input:git_remote_branch}"
+        },
+        {
+            "description": "git stash save $git_statsh_message",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:stash:save",
+            "command": "git stash save \"${input:git_statsh_message}\""
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:stash:show",
+            "command": "git stash show ${input:git_statsh_name}"
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:stash:show:p",
+            "command": "git stash show ${input:git_statsh_name} -p"
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:stash:list",
+            "command": "git stash list"
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:stash:apply",
+            "command": "git stash apply ${input:git_statsh_name}"
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:stash:drop",
+            "command": "git stash drop ${input:git_statsh_name}"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:config:open",
+            "command": "code .git/config"
+        },
+        {
+            "description": "",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:config:set",
+            "command": "git config ${select:git_config_key} ${input:git_config_val}"
+        },
+        {
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:config:set:core.quotepath:false",
+            "command": "git config core.quotepath false"
+        },
+        {
+            "description": "autocrlf",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:config:set:core.autocrlf:false",
+            "command": "git config core.autocrlf false"
+        },
+        {
+            "description": "push.default simple",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:config:set:push.default:simple",
+            "command": "git config push.default simple"
+        },
+        {
+            "description": "credential.helper wincred",
+            "optFeatureLabel": "git",
+            "inActive": true,
+            "label": "git:config:set:credential.helper:wincred",
+            "command": "git config credential.helper wincred"
+        }
+    ],
+    "variables": {
+        "git_branch": {
+            "label": "git branch ",
+            "value": ["--list", "--all", "--remotes"]
+        },
+        "git_log_format": {
+            "label": "git log formatter",
+            "value": "--pretty=format:\"%h [%cd] %s %d [%an]\" --date=format:\"%Y/%m/%d %H:%M:%S\""
+        },
+        "git_statsh_name": {
+            "label": "git statsh name",
+            "value": "stash@{0}"
+        },
+        "git_log_number": {
+            "label": "git log size",
+            "value": 10
+        },
+        "git_config_key": {
+            "label": "git config key",
+            "value": [
+                "user.name",
+                "user.email",
+                "core.ignorecase",
+                "core.quotepath",
+                "core.safecrlf",
+                "core.autocrlf"
+            ]
+        },
+        "git_add_files": {
+            "label": "git config key",
+            "separator": " ",
+            "value": ""
+        },
+        "git_add_folder": {
+            "label": "directory",
+            "description": "",
+            "value": ""
+        }
+    }
+}
