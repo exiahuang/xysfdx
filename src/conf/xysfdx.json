@@ -3,12 +3,12 @@
         {
             "label": "force:alias:list",
             "description": "",
-            "command": "sfdx force:alias:list"
+            "command": "sf alias list"
         },
         {
             "label": "force:project:create",
             "description": "",
-            "command": "sfdx force:project:create -n ${input:project_name} --template=${select:sfdx_project_template} --outputdir \"${openFolderDailog:project_directory}\"",
+            "command": "sf project generate -n ${input:project_name} --template=${select:sfdx_project_template} --output-dir \"${openFolderDailog:project_directory}\"",
             "cwd": "${project_directory}",
             "excludePlatforms": ["docker"],
             "beforeTriggers": [
@@ -32,7 +32,7 @@
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:auth:web:login --instanceurl ${select:instanceurl} --setalias ${input:alias_name}"
+            "command": "sf org login web --instance-url ${select:instanceurl} --alias ${input:alias_name}"
         },
         {
             "label": "force:auth:web:login:setdefaultusername",
@@ -40,197 +40,197 @@
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:auth:web:login --instanceurl ${select:instanceurl} --setalias ${input:alias_name} --setdefaultusername"
+            "command": "sf org login web --instance-url ${select:instanceurl} --alias ${input:alias_name} --set-default"
         },
         {
             "label": "force:org:open",
             "description": "",
-            "command": "sfdx force:org:open -p ${select:sfdc_url} -u ${select:SFDX_ALIAS}"
+            "command": "sf org open -p ${select:sfdc_url} -o ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:org:open:visualforce",
             "description": "open visualforce force page",
-            "command": "sfdx force:org:open -p /apex/${fileBasenameNoExtension}"
+            "command": "sf org open -p /apex/${fileBasenameNoExtension}"
         },
         {
             "label": "force:org:open:url",
             "description": "open url",
-            "command": "sfdx force:org:open -p ${input:sfdc_start_url}"
+            "command": "sf org open -p ${input:sfdc_start_url}"
         },
         {
             "label": "force:config:set:defaultusername",
             "description": "",
-            "command": "sfdx force:config:set defaultusername=${select:SFDX_ALIAS}"
+            "command": "sf config set target-org=${select:SFDX_ALIAS}"
         },
         {
             "label": "force:config:set:defaultdevhubusername",
             "description": "",
-            "command": "sfdx force:config:set defaultdevhubusername=${select:SFDX_ALIAS}"
+            "command": "sf config set target-dev-hub=${select:SFDX_ALIAS}"
         },
         {
             "label": "force:config:set:apiVersion",
             "description": "",
-            "command": "sfdx force:config:set apiVersion=${input:apiVersion}"
+            "command": "sf config set org-api-version=${input:apiVersion}"
         },
         {
             "label": "force:alias:set",
             "description": "",
-            "command": "sfdx force:alias:set DevHub=${input:DevHub}"
+            "command": "sf alias set DevHub=${input:DevHub}"
         },
         {
             "label": "force:org:list",
             "description": "",
-            "command": "sfdx force:org:list"
+            "command": "sf org list"
         },
         {
             "label": "force:org:list:all",
             "description": "",
-            "command": "sfdx force:org:list --all"
+            "command": "sf org list --all"
         },
         {
             "label": "force:source:retrieve:from_package_xml",
             "description": "All metadata components listed in a manifest",
-            "command": "sfdx force:source:retrieve --manifest \"${singleFileDailog:package_xml}\""
+            "command": "sf project retrieve start --manifest \"${singleFileDailog:package_xml}\""
         },
         {
             "label": "force:source:retrieve:metadata:changeset_or_packagename",
             "description": "input changeset or packagename",
-            "command": "sfdx force:source:retrieve -n \"${input:changeset_or_packagename}\""
+            "command": "sf project retrieve start -n \"${input:changeset_or_packagename}\""
         },
         {
             "label": "force:source:retrieve:metadata",
             "description": "retrieve metadata by selected",
-            "command": "sfdx force:source:retrieve --metadata \"${multiselect:METADATA}\""
+            "command": "sf project retrieve start --metadata \"${multiselect:METADATA}\""
         },
         {
             "label": "force:source:retrieve:metadata:single-file",
             "description": "retrieve metadata",
-            "command": "sfdx force:source:retrieve -m ${select:METADATA}:${input:metadata_api_name}"
+            "command": "sf project retrieve start --metadata ${select:METADATA}:${input:metadata_api_name}"
         },
         {
             "label": "force:source:retrieve:metadata:apexclass",
             "description": "A specific Apex class",
-            "command": "sfdx force:source:retrieve -m ApexClass:${input:ApexClass_Name}"
+            "command": "sf project retrieve start --metadata ApexClass:${input:ApexClass_Name}"
         },
         {
             "label": "force:source:retrieve:metadata:trigger",
             "description": "A specific trigger",
-            "command": "sfdx force:source:retrieve -m ApexTrigger:${input:ApexClass_Name}"
+            "command": "sf project retrieve start --metadata ApexTrigger:${input:ApexClass_Name}"
         },
         {
             "label": "force:source:retrieve:metadata:sobject",
             "description": "A specific CustomObject",
-            "command": "sfdx force:source:retrieve -m CustomObject:${input:CustomObject_Name}"
+            "command": "sf project retrieve start --metadata CustomObject:${input:CustomObject_Name}"
         },
         {
             "label": "force:source:retrieve:metadata:base",
             "description": "retrieve ApexClass, ApexPage, ApexComponent, ApexTrigger",
-            "command": "sfdx force:source:retrieve --metadata \"${input:base_metadata}\""
+            "command": "sf project retrieve start --metadata \"${input:base_metadata}\""
         },
         {
             "label": "force:source:retrieve:metadata:standard-sobject",
             "description": "retrieve standard sobject",
-            "command": "sfdx force:source:retrieve --metadata \"${multiselect:standard_sobject}\""
+            "command": "sf project retrieve start --metadata \"${multiselect:standard_sobject}\""
         },
         {
             "label": "force:source:retrieve:sourcepath",
             "description": "Select single Source file to retrieve",
-            "command": "sfdx force:source:retrieve --sourcepath \"${openFolderDailog:sourcepath}\""
+            "command": "sf project retrieve start --source-dir \"${openFolderDailog:sourcepath}\""
         },
         {
             "label": "force:source:retrieve:many_files",
             "description": "Select Source files to retrieve",
-            "command": "sfdx force:source:retrieve -p \"${multiFilesDailog:sfdcsourcesfiles}\""
+            "command": "sf project retrieve start --source-dir \"${multiFilesDailog:sfdcsourcesfiles}\""
         },
         {
             "label": "force:source:retrieve:current_file",
             "description": "",
-            "command": "sfdx force:source:retrieve -p \"${file}\""
+            "command": "sf project retrieve start --source-dir \"${file}\""
         },
         {
             "label": "force:source:deploy:current_file",
             "description": "",
-            "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\""
+            "command": "sf project deploy start --source-dir \"${file}\" --json"
         },
         {
             "label": "force:source:deploy:current_file:print_json",
             "description": "",
-            "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\" --json"
+            "command": "sf project deploy start --source-dir \"${file}\" --json"
         },
         {
             "label": "force:source:deploy:sourcepath",
             "description": "",
-            "command": "sfdx force:source:deploy -p \"${input:sourcepath}\""
+            "command": "sf project deploy start --source-dir \"${input:sourcepath}\""
         },
         {
             "label": "force:source:deploy:metadata",
             "description": "",
-            "command": "sfdx force:source:deploy --loglevel fatal --metadata \"${multiselect:METADATA}\""
+            "command": "sf project deploy start --metadata \"${multiselect:METADATA}\""
         },
         {
             "label": "force:mdapi:retrieve:changeset_or_packagename",
             "description": "input changeset or packagename get zip package!",
-            "command": "sfdx force:mdapi:retrieve -r \"changeset/${changeset_or_packagename}\" -p \"${input:changeset_or_packagename}\""
+            "command": "sf project retrieve mdapi --output-dir \"changeset/${changeset_or_packagename}\" --package-name \"${input:changeset_or_packagename}\""
         },
         {
             "label": "force:mdapi:deploy:select_unpackaged_zip",
             "description": "select unpackaged.zip and deploy to sfdc",
-            "command": "sfdx force:mdapi:deploy -f \"${singleFileDailog:unpackaged_zip}\" -u ${select:SFDX_ALIAS} "
+            "command": "sf project deploy mdapi --metadata-dir \"${singleFileDailog:unpackaged_zip}\" --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:mdapi:deploy:report",
             "description": "Checks the current status of an asynchronous metadata deployment",
-            "command": "sfdx force:mdapi:deploy:report"
+            "command": "sf project deploy report"
         },
         {
             "label": "force:mdapi:deploy:cancel",
             "description": "Cancels an asynchronous metadata deployment.",
-            "command": "sfdx force:mdapi:deploy:cancel"
+            "command": "sf project deploy cancel"
         },
         {
             "label": "force:apex:execute",
             "description": "",
-            "command": "sfdx force:apex:execute --apexcodefile \"${singleFileDailog:apexcodefile}\" "
+            "command": "sf apex run --file \"${singleFileDailog:apexcodefile}\""
         },
         {
             "label": "force:apex:execute:current_file",
             "description": "",
-            "command": "sfdx force:apex:execute --apexcodefile \"${file}\" "
+            "command": "sf apex run --file \"${file}\""
         },
         {
             "label": "force:apex:test:run",
             "description": "Run tests from a single class synchronously",
-            "command": "sfdx force:apex:test:run --synchronous --classnames ${fileBasenameNoExtension}"
+            "command": "sf apex test run --synchronous --tests ${fileBasenameNoExtension}"
         },
         {
             "label": "force:apex:test:run_and_retrieve_test_code_coverage",
             "description": "Get Highlight Apex Code Coverage Result",
-            "command": "sfdx force:apex:test:run --classnames ${fileBasenameNoExtension} --resultformat human --outputdir .sfdx/tools/testresults/apex --loglevel error --codecoverage"
+            "command": "sf apex test run --tests ${fileBasenameNoExtension} --result-format human --output-dir .sfdx/tools/testresults/apex --log-level error --code-coverage"
         },
         {
             "label": "force:apex:test:codecoverage",
             "description": "Warning: It will run all test. retrieve code coverage results",
-            "command": "sfdx force:apex:test:run --codecoverage -r human"
+            "command": "sf apex test run --code-coverage --result-format human"
         },
         {
             "label": "force:apex:test:codecoverage:list",
             "description": "Get Result only: the code coverage for the apex classes/triggers",
-            "command": "sfdx force:data:soql:query -t -q \"SELECT ApexClassOrTriggerId,ApexClassOrTrigger.Name,NumLinesCovered,NumLinesUncovered FROM ApexCodeCoverageAggregate ORDER BY ApexClassOrTrigger.Name\" --resultformat ${select:soql_result_format}"
+            "command": "sf data query --query \"SELECT ApexClassOrTriggerId,ApexClassOrTrigger.Name,NumLinesCovered,NumLinesUncovered FROM ApexCodeCoverageAggregate ORDER BY ApexClassOrTrigger.Name\" --result-format ${select:soql_result_format}"
         },
         {
             "label": "force:apex:log:get:n",
             "description": "fetch the last debug log",
-            "command": "sfdx force:apex:log:get -n ${input:log_size}"
+            "command": "sf apex get log --number ${input:log_size}"
         },
         {
             "label": "force:apex:log:get:id",
             "description": "fetch the last debug log by id",
-            "command": "sfdx force:apex:log:get -i ${input:ID} --color"
+            "command": "sf apex get log --log-id ${input:ID} --color"
         },
         {
             "label": "force:apex:log:list",
             "description": "list debug logs",
-            "command": "sfdx force:apex:log:list"
+            "command": "sf apex list log"
         },
         {
             "label": "force:apex:log:tail",
@@ -238,7 +238,7 @@
             "termial": {
                 "name": "xysfdx"
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c"
+            "command": "sf apex tail log --color --debug-level ${select:LOGLEVEL}"
         },
         {
             "label": "force:apex:log:tail:skiptraceflag",
@@ -249,7 +249,7 @@
             "dockerOptions": {
                 "openTTY": true
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c --skiptraceflag"
+            "command": "sf apex tail log --color --debug-level ${select:LOGLEVEL} --skip-trace-flag"
         },
         {
             "label": "force:apex:log:tail:grep_debug_log",
@@ -260,7 +260,7 @@
             "dockerOptions": {
                 "openTTY": true
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} -c | grep --color=auto ${select:apex_grep_log_pattern}",
+            "command": "sf apex tail log --color --debug-level ${select:LOGLEVEL} | grep --color=auto ${select:apex_grep_log_pattern}",
             "platforms": ["linux", "darwin", "wsl", "bash"]
         },
         {
@@ -272,7 +272,7 @@
             "dockerOptions": {
                 "openTTY": true
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} ${input:skip_trace_flag_setup} >> ${input:log_file}"
+            "command": "sf apex tail log --color --debug-level ${select:LOGLEVEL} ${input:skip_trace_flag_setup} >> ${input:log_file}"
         },
         {
             "label": "force:apex:log:tail:tee_to_file",
@@ -283,23 +283,23 @@
             "dockerOptions": {
                 "openTTY": true
             },
-            "command": "sfdx force:apex:log:tail --loglevel ${select:LOGLEVEL} ${input:skip_trace_flag_setup} | tee ${input:log_file}",
+            "command": "sf apex tail log --color --debug-level ${select:LOGLEVEL} ${input:skip_trace_flag_setup} | tee ${input:log_file}",
             "platforms": ["linux", "darwin", "wsl", "bash"]
         },
         {
             "label": "force:help",
             "description": "",
-            "command": "sfdx force -h"
+            "command": "sf help"
         },
         {
             "label": "force:doc:commands:list",
             "description": "",
-            "command": "sfdx force:doc:commands:list"
+            "command": "sf doc commands list"
         },
         {
             "label": "force:visualforce:component:create",
             "description": "",
-            "command": "sfdx force:visualforce:component:create -n ${input:name} -l ${input:label} --outputdir \"${input:sourcepath_component}\"",
+            "command": "sf generate visualforce component --name ${input:name} --label ${input:label} --output-dir \"${input:sourcepath_component}\"",
             "beforeTriggers": [
                 {
                     "type": "buildin",
@@ -318,7 +318,7 @@
         {
             "label": "force:visualforce:page:create",
             "description": "",
-            "command": "sfdx force:visualforce:page:create -n ${input:page_name} -l ${input:page_name} --outputdir \"${input:sourcepath_vf}\"",
+            "command": "sf generate visualforce page --name ${input:page_name} --label ${input:page_name} --output-dir \"${input:sourcepath_vf}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -330,7 +330,7 @@
         {
             "label": "force:lightning:test:create",
             "description": "",
-            "command": "sfdx force:lightning:test:create -n ${input:aura_name} -d \"${input:sourcepath_aura}/${input:aura_name}\"",
+            "command": "sf generate lightning test --name ${input:aura_name} --output-dir \"${input:sourcepath_aura}/${input:aura_name}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -344,7 +344,7 @@
         {
             "label": "force:lightning:interface:create",
             "description": "",
-            "command": "sfdx force:lightning:interface:create -n ${input:aura_name} -d \"${input:sourcepath_aura}\"",
+            "command": "sf generate lightning interface --name ${input:aura_name} --output-dir \"${input:sourcepath_aura}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -358,7 +358,7 @@
         {
             "label": "force:lightning:event:create",
             "description": "",
-            "command": "sfdx force:lightning:event:create -n ${input:aura_name} -d \"${input:sourcepath_aura}\"",
+            "command": "sf generate lightning event --name ${input:aura_name} --output-dir \"${input:sourcepath_aura}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -372,7 +372,7 @@
         {
             "label": "force:lightning:component:create:aura",
             "description": "",
-            "command": "sfdx force:lightning:component:create -n ${input:aura_name} -d \"${input:sourcepath_aura}\"",
+            "command": "sf generate lightning component --name ${input:aura_name} --output-dir \"${input:sourcepath_aura}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -386,7 +386,7 @@
         {
             "label": "force:lightning:app:create",
             "description": "",
-            "command": "sfdx force:lightning:app:create -n ${input:aura_name} -d \"${input:sourcepath_aura}\"",
+            "command": "sf generate lightning app --name ${input:aura_name} --output-dir \"${input:sourcepath_aura}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -400,7 +400,7 @@
         {
             "label": "force:apex:trigger:create",
             "description": "",
-            "command": "sfdx force:apex:trigger:create -n ${input:trigger_name} --outputdir \"${input:sourcepath_trigger}\"",
+            "command": "sf generate apex trigger --name ${input:trigger_name} --output-dir \"${input:sourcepath_trigger}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -412,7 +412,7 @@
         {
             "label": "force:apex:class:create",
             "description": "",
-            "command": "sfdx force:apex:class:create -n ${input:apex_name} --outputdir \"${input:sourcepath_apex}\" --template ${select:apex_template}",
+            "command": "sf generate apex class --name ${input:apex_name} --output-dir \"${input:sourcepath_apex}\" --template ${select:apex_template}",
             "beforeTriggers": [
                 {
                     "type": "buildin",
@@ -431,7 +431,7 @@
         {
             "label": "force:lightning:component:create:lwc",
             "description": "",
-            "command": "sfdx force:lightning:component:create --type lwc -n ${input:lwc_name} --outputdir \"${input:sourcepath_lwc}\"",
+            "command": "sf generate lightning web component --name ${input:lwc_name} --output-dir \"${input:sourcepath_lwc}\"",
             "afterTriggers": [
                 {
                     "type": "buildin",
@@ -443,170 +443,168 @@
         {
             "label": "force:data:soql:query",
             "description": "",
-            "command": "sfdx force:data:soql:query -q \"${input:soql_str}\" --resultformat ${select:soql_result_format}"
+            "command": "sf data query --query \"${input:soql_str}\" --result-format ${select:soql_result_format}"
         },
         {
             "label": "force:data:soql:query:tooling",
             "description": "",
-            "command": "sfdx force:data:soql:query -t -q \"${input:soql_str}\" --resultformat ${select:soql_result_format}"
+            "command": "sf data query --query \"${input:soql_str}\" --result-format ${select:soql_result_format} --use-tooling-api"
         },
         {
             "label": "force:data:soql:query:write_to_file",
             "description": "",
-            "command": "sfdx force:data:soql:query -q \"${input:soql}\" --resultformat ${select:soql_result_format} > ${input:soql_result}"
+            "command": "sf data query --query \"${input:soql}\" --result-format ${select:soql_result_format} > ${input:soql_result}"
         },
         {
             "label": "xysfdx:data:migrate:from_org1_to_org2",
             "description": "run soql in org1 and import data to org2.",
-            "command": "sfdx force:data:tree:export -q \"${input:soql}\" --outputdir=${data_dir} -u ${select:SFDX_ALIAS} && sfdx force:data:tree:import -f ${data_dir}/${input:sobject_name}.json"
+            "command": "sf data export tree --query \"${input:soql}\" --output-dir ${data_dir} --target-org ${select:SFDX_ALIAS} && sf data import tree --files ${data_dir}/${input:sobject_name}.json"
         },
         {
             "label": "force:data:tree:export",
             "description": "Exports data from this org into sObject tree format for force:data:tree:import consumption.",
-            "command": "sfdx force:data:tree:export -q \"${input:soql}\" --outputdir=${input:data_dir}"
+            "command": "sf data export tree --query \"${input:soql}\" --output-dir ${input:data_dir}"
         },
         {
             "label": "force:data:tree:export:select-alias",
             "description": "Exports data from an authorized org into sObject tree format for force:data:tree:import consumption.",
-            "command": "sfdx force:data:tree:export -q \"${input:soql}\" --outputdir=${input:data_dir} -u ${select:SFDX_ALIAS}"
+            "command": "sf data export tree --query \"${input:soql}\" --output-dir ${input:data_dir} --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:data:tree:import",
             "description": "Imports data into this org using the SObject Tree Save API. This data can include master-detail relationships.",
-            "command": "sfdx force:data:tree:import -f \"${singleFileDailog:import_file}\" --loglevel ${select:LOGLEVEL}"
+            "command": "sf data import tree --files \"${singleFileDailog:import_file}\" --log-level ${select:LOGLEVEL}"
         },
         {
-            "optFeatureLabel": "use_advanced_command",
-            "inActive": true,
             "label": "force:data:tree:import:select-alias",
             "description": "Imports data into an authorized org using the SObject Tree Save API. This data can include master-detail relationships.",
-            "command": "sfdx force:data:tree:import -f \"${singleFileDailog:import_file}\" --loglevel ${select:LOGLEVEL} -u ${select:SFDX_ALIAS}"
+            "command": "sf data import tree --files \"${singleFileDailog:import_file}\" --log-level ${select:LOGLEVEL} --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:data:tree:import:plan",
             "description": "path to plan to insert multiple data",
-            "command": "sfdx force:data:tree:import --plan \"${singleFileDailog:plan_file}\" --loglevel debug"
+            "command": "sf data import tree --plan \"${singleFileDailog:plan_file}\" --log-level debug"
         },
         {
             "label": "force:data:record:delete:by_sobject_id",
             "description": "",
-            "command": "sfdx force:data:record:delete --sobjecttype ${input:sobject_type} --sobjectid ${input:sobject_id}"
+            "command": "sf data delete record --sobject ${input:sobject_type} --record-id ${input:sobject_id}"
         },
         {
             "label": "force:data:record:delete:by_where_condition",
             "description": "",
-            "command": "sfdx force:data:record:delete --sobjecttype ${input:sobject_type} --where \"${input:where_condition}\""
+            "command": "sf data delete record --sobject ${input:sobject_type} --where \"${input:where_condition}\""
         },
         {
             "label": "force:data:record:get:by_sobject_id",
             "description": "",
-            "command": "sfdx force:data:record:get --sobjecttype ${input:sobject_type} --sobjectid ${input:sobject_id}"
+            "command": "sf data get record --sobject ${input:sobject_type} --record-id ${input:sobject_id}"
         },
         {
             "label": "force:data:record:get:by_where_condition",
             "description": "",
-            "command": "sfdx force:data:record:get --sobjecttype ${input:sobject_type} --where \"${input:where_condition}\""
+            "command": "sf data get record --sobject ${input:sobject_type} --where \"${input:where_condition}\""
         },
         {
             "label": "force:data:record:update:by_sobject_id",
             "description": "",
-            "command": "sfdx force:data:record:update --sobjecttype ${input:sobject_type} --sobjectid ${input:sobject_id} --values \"${input:fieldName_newvalue}\""
+            "command": "sf data update record --sobject ${input:sobject_type} --record-id ${input:sobject_id} --values \"${input:fieldName_newvalue}\""
         },
         {
             "label": "force:data:record:update:by_where_condition",
             "description": "",
-            "command": "sfdx force:data:record:update --sobjecttype ${input:sobject_type} --where \"${input:where_condition}\" --values \"${input:fieldName_newvalue}\""
+            "command": "sf data update record --sobject ${input:sobject_type} --where \"${input:where_condition}\" --values \"${input:fieldName_newvalue}\""
         },
         {
             "label": "force:data:record:create",
             "description": "",
-            "command": "sfdx force:data:record:create --sobjecttype ${input:sobject_type} --values \"${input:fieldName_value}\" --loglevel ${select:LOGLEVEL} "
+            "command": "sf data create record --sobject ${input:sobject_type} --values \"${input:fieldName_value}\" --log-level ${select:LOGLEVEL}"
         },
         {
             "label": "force:data:bulk:upsert",
             "description": "",
-            "command": "sfdx force:data:bulk:upsert --sobjecttype ${input:sobject_type} -f \"${singleFileDailog:bulk_csv_file}\" --externalid ${input:external_id} --loglevel ${select:LOGLEVEL} "
+            "command": "sf data upsert bulk --sobject ${input:sobject_type} --file \"${singleFileDailog:bulk_csv_file}\" --external-id ${input:external_id} --log-level ${select:LOGLEVEL}"
         },
         {
             "label": "force:data:bulk:delete",
             "description": "",
-            "command": "sfdx force:data:bulk:delete --sobjecttype ${input:sobject_type} --csvfile \"${singleFileDailog:bulk_csv_file}\" --loglevel ${select:LOGLEVEL} "
+            "command": "sf data delete bulk --sobject ${input:sobject_type} --file \"${singleFileDailog:bulk_csv_file}\" --log-level ${select:LOGLEVEL}"
         },
         {
             "label": "force:data:bulk:status",
             "description": "",
-            "command": "sfdx force:data:bulk:status --jobid ${input:bulk_jobid}"
+            "command": "sf data bulk status --job-id ${input:bulk_jobid}"
         },
         {
             "label": "force:schema:sobject:describe",
             "description": "",
-            "command": "sfdx force:schema:sobject:describe --sobjecttype ${input:sobject_type}"
+            "command": "sf sobject describe --sobject ${input:sobject_type}"
         },
         {
             "label": "force:schema:sobject:describe:usetoolingapi",
             "description": "",
-            "command": "sfdx force:schema:sobject:describe --sobjecttype ${input:sobject_type} --usetoolingapi"
+            "command": "sf sobject describe --sobject ${input:sobject_type} --use-tooling-api"
         },
         {
             "label": "force:config:list",
             "description": "",
-            "command": "sfdx force:config:list"
+            "command": "sf config list"
         },
         {
             "label": "force:doc:commands:display",
             "description": "",
-            "command": "sfdx force:doc:commands:display"
+            "command": "sf doc commands display"
         },
         {
             "label": "force:limits:api:display",
             "description": "",
-            "command": "sfdx force:limits:api:display -u ${select:SFDX_ALIAS} "
+            "command": "sf limits api display --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:org:create:help",
             "description": "",
-            "command": "sfdx force:org:create --help"
+            "command": "sf org create scratch --help"
         },
         {
             "label": "force:org:create",
             "description": "",
-            "command": "sfdx force:org:create --setdefaultusername --definitionfile=${input:scratch_org_definitionfile} --setalias=${input:scratch_org_alias_name} --targetdevhubusername=${input:target_devhub_username}"
+            "command": "sf org create scratch --set-default --definition-file ${input:scratch_org_definitionfile} --alias ${input:scratch_org_alias_name} --target-dev-hub ${input:target_devhub_username}"
         },
         {
             "label": "force:source:push",
             "description": "",
-            "command": "sfdx force:source:push"
+            "command": "sf project deploy start --source-dir force-app"
         },
         {
             "label": "force:user:create:help",
             "description": "",
-            "command": "sfdx force:user:create --help"
+            "command": "sf org create user --help"
         },
         {
             "label": "force:user:password:generate",
             "description": "",
-            "command": "sfdx force:user:password:generate --targetusername=${select:SFDX_ALIAS}"
+            "command": "sf org generate password --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:user:display",
             "description": "",
-            "command": "sfdx force:user:display --targetusername=${select:SFDX_ALIAS}"
+            "command": "sf org display user --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:user:list",
             "description": "",
-            "command": "sfdx force:user:list --targetusername=${select:SFDX_ALIAS}"
+            "command": "sf org list users --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "force:user:permset:assign",
             "description": "",
-            "command": "sfdx force:user:permset:assign --permsetname ${input:PERMSETNAME}"
+            "command": "sf org assign permset --name ${input:PERMSETNAME}"
         },
         {
             "label": "force:source:diff:metadata",
             "description": "",
             "cwd": "${TMPDIR}/xysfdx/sfdx/",
-            "command": "sfdx force:source:retrieve -p ${file} -u ${select:SFDX_ALIAS}",
+            "command": "sf project retrieve start --source-dir ${file} --target-org ${select:SFDX_ALIAS}",
             "beforeTriggers": [
                 {
                     "type": "buildin",
@@ -803,14 +801,14 @@
             "inActive": true,
             "label": "Advanced:force:source:deploy:current_file",
             "description": "Select Authenticated server and deploy file!",
-            "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\" --targetusername=${select:SFDX_ALIAS}"
+            "command": "sf project deploy start --source-path \"${file}\" --target-org ${select:SFDX_ALIAS} --log-level fatal"
         },
         {
             "optFeatureLabel": "use_advanced_command",
             "inActive": true,
             "label": "Advanced:force:source:retrieve:current_file",
             "description": "Select Authenticated server and retrieve file!",
-            "command": "sfdx force:source:retrieve -p \"${file}\" --targetusername=${select:SFDX_ALIAS}"
+            "command": "sf project retrieve start --source-path \"${file}\" --target-org ${select:SFDX_ALIAS}"
         },
         {
             "label": "pretty apex code.(cls/trigger/apex file)",
@@ -2392,7 +2390,7 @@
             "filetypes": [".trigger", ".cls", ".component", ".page"],
             "cwd": "${workspaceFolder}",
             "inActive": true,
-            "command": "sfdx force:source:deploy --loglevel fatal --sourcepath \"${file}\""
+            "command": "sf project deploy start --source-path \"${file}\" --log-level fatal"
         },
         {
             "optFeatureLabel": "auto_run_apex_anonymous",
@@ -2401,7 +2399,7 @@
             "filetypes": [".apex"],
             "cwd": "${workspaceFolder}",
             "inActive": true,
-            "command": "sfdx force:apex:execute --apexcodefile \"${file}\""
+            "command": "sf apex run --file \"${file}\""
         }
     ]
 }
