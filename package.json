@@ -2,7 +2,7 @@
     "name": "xysfdx",
     "displayName": "xysfdx",
     "description": "A rapid development tool for Salesforce SFDX Development. Support Docker/WSL !",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "publisher": "ExiaHuang",
     "engines": {
         "vscode": "^1.40.0"
